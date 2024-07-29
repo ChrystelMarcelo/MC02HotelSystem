@@ -1,12 +1,8 @@
-import java.util.ArrayList;
-
-/**
- *The Hotel class represents a hotel with a list of rooms and reservations.
- */
-public class Hotel {
+{
     private String hotelName;
     private ArrayList<Room> roomList;
     private ArrayList<Reservation> reservations;
+    private ArrayList<Double> datePriceModifier;
     private int roomCount;
 
     /**
@@ -15,13 +11,29 @@ public class Hotel {
      * @param roomCount the number of rooms in the hotel
      */
     Hotel(String hotelName, int roomCount) {
+        int i;
+
         this.hotelName = hotelName;
         this.roomList = new ArrayList<>(); // Rooms in a Hotel
-        this.reservations = new ArrayList<>();
+        this.reservations = new ArrayList<>(roomCount);
         this.roomCount = roomCount;
+        this.datePriceModifier = new ArrayList<>();
 
-        for (int i = 0; i < roomCount; i++) {
-            roomList.add(new Room("Room " + (i + 1)));
+        for(i = 0; i < 31; i++){
+            this.datePriceModifier.add(1.0);
+        }
+
+        for (i = 0; i < roomCount; i++) {
+            Room room;
+            String roomName = "Room " + (i + 1);
+            if(i % 3 == 0){
+                room = new Standard(roomName, 1299f);
+            } else if (i % 3 == 1) {
+                room = new Deluxe(roomName, 1299f);
+            } else {
+                room = new Executive(roomName, 1299f);
+            }
+            roomList.add(room);
         }
     }
 
@@ -97,10 +109,22 @@ public class Hotel {
      * Adds a new room to the hotel.
      * @param roomName the name of the new room
      */
-    public void addRoom(String roomName) {
-        roomList.add(new Room(roomName));
+    public void addStandardRoom(String roomName) {
+        roomList.add(new Standard(roomName, 1299f));
         this.roomCount++;
     }
+
+    public void addDeluxeRoom(String roomName){
+        roomList.add(new Deluxe(roomName, 1299f));
+        this.roomCount++;
+    }
+
+    public void addExecutiveRoom(String roomName){
+        roomList.add(new Executive(roomName, 1299f));
+        this.roomCount++;
+    }
+
+
 
     /**
      * Removes a room from the hotel if it is not reserved.
@@ -195,7 +219,7 @@ public class Hotel {
      * @param roomName the name of the room
      * @return true if the reservation was added, false otherwise
      */
-    public boolean addReservation(String guestName, int checkInDate, int checkOutDate, String roomName) {
+    public boolean addReservation(Hotel hotel, String guestName, int checkInDate, int checkOutDate, String roomName, String discountCode) {
         for (Reservation res : reservations) {
             if (res.getRoom().getRoomName().equalsIgnoreCase(roomName)) {
                 if (!(checkOutDate <= res.getCheckInDate() || checkInDate >= res.getCheckOutDate())) {
@@ -216,7 +240,7 @@ public class Hotel {
         }
 
         if (room != null) {
-            Reservation newReservation = new Reservation(guestName, checkInDate, checkOutDate, room);
+            Reservation newReservation = new Reservation(hotel, guestName, checkInDate, checkOutDate, room, discountCode);
             reservations.add(newReservation);
             return true;
         }
@@ -249,7 +273,7 @@ public class Hotel {
      * Displays the number of available and booked rooms on a given date.
      * @param date the date to check
      */
-    public void displayAvailableAndBookedRooms(int date) {
+    public String displayAvailableAndBookedRooms(int date) {
         int availableRooms = 0;
         int bookedRooms = 0;
 
@@ -268,10 +292,13 @@ public class Hotel {
                 availableRooms++;
             }
         }
+
         System.out.println("=======================");
         System.out.println("Total Number of Available Rooms on day " + date + " of the month: " + availableRooms);
         System.out.println("Total Number of Booked Rooms on day " + date + " of the month: " + bookedRooms);
         System.out.println("=======================");
+
+        return "Total Number of Available Rooms on day " + date + " of the month: " + availableRooms + "\n" + "Total Number of Booked Rooms on day " + date + " of the month: " + bookedRooms;
     }
 
     /**
@@ -283,7 +310,8 @@ public class Hotel {
             if (r.getRoomName().equalsIgnoreCase(roomName)) {
                 System.out.println("=======================");
                 System.out.println("Room Name: " + r.getRoomName());
-                System.out.println("Price per Night: " + r.getRoomPrice());
+                System.out.println("Room Type: " + r.getRoomType());
+                System.out.println("Price per Night: " + r.getPrice());
                 System.out.println("Availability: ");
 
                 for (int day = 1; day <= 31; day++) {
@@ -312,7 +340,7 @@ public class Hotel {
                 System.out.println("Check-In Date: " + r.getCheckInDate());
                 System.out.println("Check-Out Date: " + r.getCheckOutDate());
                 System.out.println("Total Booking Price: " + r.getTotalPrice());
-                System.out.println("Price Per Night: " + r.getRoom().getRoomPrice());
+                System.out.println("Price Per Night: " + r.getRoom().getPrice());
                 System.out.println("=======================");
                 reservationFound = true;
                 break;
@@ -323,4 +351,36 @@ public class Hotel {
             System.out.println("Reservation Not Found");
         }
     }
+
+
+
+
+    public void setDatePriceModifier(int day, double modifier){
+        if(day >= 1 && day <= 31){
+            datePriceModifier.set(day-1, modifier);
+        }
+    }
+
+    public double getPriceForDate(int day, Room room){
+        if(day >= 1 && day <= 31){
+            return datePriceModifier.get(day - 1) * room.getPrice();
+        }
+        return room.getPrice();
+    }
+
+    public void updateAffectedReservation(int day){
+        for(Reservation reservation: reservations){
+            if(reservation.getCheckInDate() <= day && reservation.getCheckOutDate() > day){
+                reservation.recalculateTotalPrice();
+            }
+        }
+    }
+
+    public ArrayList<Double> getDatePriceModifier(){
+        return datePriceModifier;
+    }
+
+
+
+
 }
