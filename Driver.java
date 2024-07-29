@@ -7,7 +7,11 @@ import java.util.Scanner;
 public class Driver {
     public static void main(String[] args) {
 
+        HotelSystemGUI GUI = new HotelSystemGUI();
         HotelSystem hrs = new HotelSystem();
+        Controller controller = new Controller(GUI, hrs);
+
+        /*
         Scanner menuChoice = new Scanner(System.in);
 
         int exit = 0;
@@ -61,6 +65,10 @@ public class Driver {
 
 
         }
+
+         */
     }
+}
+
 
 
