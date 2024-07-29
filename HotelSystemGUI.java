@@ -51,8 +51,10 @@ public class HotelSystemGUI extends JFrame {
     private JTextField tfCheckIn;
     private JTextField tfCheckOut;
     private JTextField tfPriceModifier;
+    private JTextField tfViewRoomSelect;
 
     private JTextArea taAvailability;
+    private JTextArea taRoomInfo;
 
 
     HotelSystemGUI(){
@@ -489,9 +491,25 @@ public class HotelSystemGUI extends JFrame {
         lblDate.setBounds(150, 50, 300, 50);
         panelCenter.add(lblDate);
 
-        tfRoomName = new JTextField();
-        tfRoomName.setBounds(100, 100, 300, 35);
-        panelCenter.add(tfRoomName);
+        tfViewRoomSelect = new JTextField();
+        tfViewRoomSelect.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfViewRoomSelect);
+
+
+        viewSelectRoom.setBounds(100, 150, 300, 50);
+        panelCenter.add(viewSelectRoom);
+
+        taRoomInfo = new JTextArea();
+        taRoomInfo.setEditable(false);
+        taRoomInfo.setLineWrap(true);
+        taRoomInfo.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(taRoomInfo);
+        scrollPane.setBounds(80, 250, 350, 200);
+
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panelCenter.add(scrollPane);
 
         selectedRoomFrame.add(panelCenter, BorderLayout.CENTER);
 
@@ -1207,6 +1225,15 @@ public class HotelSystemGUI extends JFrame {
         taAvailability.setVisible(true);
     }
 
+    public void displaySelectedRoom(String selectedRoom){
+        taRoomInfo.setText(selectedRoom);
+        taRoomInfo.setVisible(true);
+    }
+
+    public String getSelectRoomName(){
+        return tfViewRoomSelect.getText();
+    }
+
     public int getRoomCount() {
         String roomCountStr = tfRoomCount.getText();
 
@@ -1236,15 +1263,22 @@ public class HotelSystemGUI extends JFrame {
 
 
     public JButton getHighLevelInfoButton(){
+
         return highLevelInfo;
     }
 
     public JButton getLowLevelInfoButton(){
+
         return lowLevelInfo;
     }
 
     public JButton getViewAvailableRooms(){
+
         return viewAvailableRooms;
+    }
+
+    public JButton getViewSelectRoom(){
+        return viewSelectRoom;
     }
 
 
