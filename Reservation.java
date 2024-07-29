@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Date;
-
 /**
  * Represents a reservation made by a guest for a room in a hotel.
  */
@@ -10,6 +7,8 @@ public class Reservation {
     private int checkOutDate;
     private Room room;
     private double totalPrice;
+    private String discountCode;
+    private Hotel hotel;
 
     /**
      * Constructs a new Reservation object.
@@ -18,13 +17,15 @@ public class Reservation {
      * @param checkOutDate The check-out date of the reservation
      * @param room         The Room object reserved by the guest.
      */
-    Reservation(String guestName, int checkInDate, int checkOutDate, Room room){
+    Reservation(Hotel hotel, String guestName, int checkInDate, int checkOutDate, Room room, String discountCode){
         this.guestName = guestName;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.room = room;
-        this.totalPrice = (checkOutDate - checkInDate) * room.getRoomPrice();
+        this.discountCode = discountCode;
+        this.hotel = hotel;
         room.setIsAvailable(false);
+        this.totalPrice = calculateTotalPrice();
     }
 
     /**
@@ -66,6 +67,59 @@ public class Reservation {
      */
     public Room getRoom() {
         return room;
+    }
+
+
+
+
+    public void setTotalPrice(double totalPrice){
+        this.totalPrice = totalPrice;
+    }
+
+    public double calculateTotalPrice(){
+        double totalPrice = 0.0;
+        for (int day = checkInDate; day < checkOutDate; day++) {
+            totalPrice = totalPrice + hotel.getPriceForDate(day, room);
+        }
+        totalPrice = applyDiscount(totalPrice, checkOutDate - checkInDate);
+        return totalPrice;
+    }
+
+    public void recalculateTotalPrice(){
+        this.totalPrice = calculateTotalPrice();
+    }
+
+
+    private double applyDiscount(double totalPrice, int numberOfDays){
+        switch(discountCode){
+            case "I_WORK_HERE":
+                return totalPrice - (totalPrice* 0.1);
+            case "STAY4_GET1":
+                if(numberOfDays >= 5){
+                    return totalPrice - (totalPrice/numberOfDays);
+                }
+                break;
+            case "PAYDAY":
+                if(checkPayday(checkInDate, checkOutDate)){
+                    return totalPrice - (totalPrice * 0.07);
+                }
+                break;
+            default:
+                return totalPrice;
+        }
+
+        return totalPrice;
+    }
+
+    private boolean checkPayday(int checkInDate, int checkOutDate){
+        int i;
+
+        for(i = checkInDate; i < checkOutDate; i++){
+            if (i == 15 || i == 30){
+                return true;
+            }
+        }
+        return false;
     }
 
 
