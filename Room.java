@@ -4,9 +4,9 @@ import java.util.ArrayList;
 /**
  * The Room Class represents a room in a hotel
  */
-public class Room {
+public abstract class Room {
     private String roomName;
-    private double roomPricePerNight;
+    private double baseRate;
     private boolean available;
 
 
@@ -14,9 +14,9 @@ public class Room {
      * Constructs a Room object with a given room name
      * @param roomName
      */
-    Room(String roomName){
+    Room(String roomName, double baseRate){
         this.roomName = roomName;
-        this.roomPricePerNight = 1299f;
+        this.baseRate = baseRate;
         this.available = true;
     }
 
@@ -35,15 +35,20 @@ public class Room {
      * @param roomPrice the base price of the room
      */
     public void setRoomPrice(double roomPrice){
-        roomPricePerNight = roomPrice;
+        baseRate = roomPrice;
     }
+
+
+    public abstract double getPrice();
+
+    public abstract String getRoomType();
 
     /**
      * Returns the base price per night
      * @return the base price per night
      */
-    public double getRoomPrice(){
-        return roomPricePerNight;
+    public double getBaseRate(){
+        return baseRate;
     }
 
     /**
