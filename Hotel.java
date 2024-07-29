@@ -1,4 +1,9 @@
-{
+import java.util.ArrayList;
+
+/**
+ *The Hotel class represents a hotel with a list of rooms and reservations.
+ */
+public class Hotel {
     private String hotelName;
     private ArrayList<Room> roomList;
     private ArrayList<Reservation> reservations;
@@ -305,24 +310,29 @@
      * Prints the details of a specific room by name.
      * @param roomName the name of the room
      */
-    public void printRoomDetails(String roomName) {
+    public String printRoomDetails(String roomName) {
+        StringBuilder output = new StringBuilder();
+
         for (Room r : roomList) {
             if (r.getRoomName().equalsIgnoreCase(roomName)) {
-                System.out.println("=======================");
-                System.out.println("Room Name: " + r.getRoomName());
-                System.out.println("Room Type: " + r.getRoomType());
-                System.out.println("Price per Night: " + r.getPrice());
-                System.out.println("Availability: ");
+                output.append("=======================\n");
+                output.append("Room Name: ").append(r.getRoomName()).append("\n");
+                output.append("Room Type: ").append(r.getRoomType()).append("\n");
+                output.append("Price per Night: ").append(r.getPrice()).append("\n");
+                output.append("Availability: \n");
 
                 for (int day = 1; day <= 31; day++) {
-                    String status = (r.isAvailableMonth(day, reservations) ? "Available " : "Booked ");
-                    System.out.println("Day " + day + ": " + status);
+                    String status = (r.isAvailableMonth(day, reservations) ? "Available" : "Booked");
+                    output.append("Day ").append(day).append(": ").append(status).append("\n");
                 }
-                System.out.println("=======================");
-                return;
+                output.append("=======================\n");
+
+                return output.toString(); // Return the output if the room is found
             }
         }
-        System.out.println("Room not found.");
+
+        output.append("Room not found.\n");
+        return output.toString(); // Return the output if the room is not found
     }
 
     /**
