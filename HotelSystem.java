@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class HotelSystem {
     ArrayList<Hotel> hotelList = new ArrayList<>();
     Scanner Scanner = new Scanner(System.in);
-    private int roomCount;
 
     /**
      * Constructs a Hotel System Object
@@ -20,63 +19,25 @@ public class HotelSystem {
     /**
      * Method that creates a hotel
      */
-    public void createHotel() {
-
-        boolean hotelExit = false;
-        do {
-
-            System.out.println("=======================");
-            System.out.print("Enter hotel name (enter 'exit' to back):");
-            String hotelNameInput = Scanner.nextLine();
-            System.out.println("=======================");
-
-            if (hotelNameInput.equals("exit")) {
-                hotelExit = true;
-                continue;
+    public void createHotel(String hotelName, int roomCount) {
+        boolean hotelExist = false;
+        for (Hotel h : hotelList) {
+            if (h.hotelFound(hotelName)) {
+                hotelExist = true;
             }
+        }
 
-            boolean hotelExist = false;
-            for (Hotel h : hotelList) {
-                if (h.hotelFound(hotelNameInput)) {
-                    hotelExist = true;
-                }
-            }
-
-            if (hotelExist)
-                System.out.println("Hotel already exists! Please input another hotel name: ");
-            else {
-                System.out.println("=======================");
-                System.out.print("Enter number of rooms (1 - 50): (enter 'exit' to back):");
-
-                if (Scanner.hasNextInt()) {
-                    roomCount = Scanner.nextInt();
-                    Scanner.nextLine();
-
-                    if ((roomCount < 1) || (roomCount > 50)) {
-                        System.out.println("Enter number of rooms from 1 - 50 only. ");
-                        continue;
-                    }
-                } else {
-                    String roomScanInput = Scanner.next();
-                    if (roomScanInput.equals("exit")) {
-                        hotelExit = true;
-                        continue;
-                    } else {
-                        System.out.println("Invalid Input Please Try Again.");
-                        continue;
-                    }
-
-                }
-                System.out.println("=======================");
-
-                Hotel hotel = new Hotel(hotelNameInput, roomCount);
+        if (hotelExist) {
+            System.out.println("Hotel already exists! Please input another hotel name: ");
+        } else {
+            if (roomCount < 1 || roomCount > 50) {
+                System.out.println("Enter number of rooms from 1 - 50 only. ");
+            } else {
+                Hotel hotel = new Hotel(hotelName, roomCount);
                 hotelList.add(hotel);
-                System.out.println(hotelNameInput + " hotel successfully added in the system");
-
+                System.out.println(hotelName + " hotel successfully added in the system");
             }
-
-
-        } while (!hotelExit);
+        }
     }
 
 
@@ -209,9 +170,10 @@ public class HotelSystem {
                         System.out.println("4: Update Base Price of Rooms");
                         System.out.println("5: Remove Reservation");
                         System.out.println("6: Remove Hotel");
-                        System.out.println("7: Back To Menu");
+                        System.out.println("7: Modify Date Price");
+                        System.out.println("8: Back To Menu");
                         System.out.println("=======================");
-                        System.out.println("Choose Option (1-7): ");
+                        System.out.println("Choose Option (1-8): ");
                         int option = scanner.nextInt();
                         scanner.nextLine();
 
@@ -239,6 +201,11 @@ public class HotelSystem {
                             case 2:
                                 System.out.println("Enter New Room Name (e.g., Room 1): ");
                                 String roomAdd = scanner.nextLine();
+                                System.out.println("Select Room Type to add: ");
+                                System.out.println("1: Standard Room");
+                                System.out.println("2: Deluxe Room");
+                                System.out.println("3: Executive Room");
+                                int addRoomType = scanner.nextInt();
                                 System.out.println("Confirm Change? (1: yes / 2: no): ");
                                 int confirm2 = scanner.nextInt();
                                 scanner.nextLine();
@@ -252,9 +219,19 @@ public class HotelSystem {
                                         }
                                     }
                                     if (!roomExists && h.getRoomList().size() < 50) {
-                                        h.addRoom(roomAdd);
-                                        System.out.println("Room Successfully Added");
-                                        exit = true;
+                                        if(addRoomType == 1){
+                                            h.addStandardRoom(roomAdd);
+                                            System.out.println("Room Successfully Added");
+                                            exit = true;
+                                        } else if(addRoomType == 2){
+                                            h.addDeluxeRoom(roomAdd);
+                                            System.out.println("Room Successfully Added");
+                                            exit = true;
+                                        } else if(addRoomType == 3){
+                                            h.addExecutiveRoom(roomAdd);
+                                            System.out.println("Room Successfully Added");
+                                            exit = true;
+                                        }
                                     } else {
                                         System.out.println("Error: Room already exists or maximum room limit reached.");
                                         exit = true;
@@ -336,6 +313,27 @@ public class HotelSystem {
                                 break;
 
                             case 7:
+                                if(!h.isReservationEmpty()) {
+                                    int i, numDays, day;
+                                    double modifier = 0.0;
+                                    System.out.println("Enter number of days for which you want to set price modifiers: ");
+                                    numDays = scanner.nextInt();
+
+                                    for (i = 0; i < numDays; i++) {
+                                        System.out.print("Enter day (1-31): ");
+                                        day = scanner.nextInt();
+                                        System.out.print("Enter price modifier for day(e.g. 0.5 for 50%): ");
+                                        modifier = scanner.nextDouble();
+                                        h.setDatePriceModifier(day, modifier);
+                                        System.out.println("Price Modifier: " + h.getDatePriceModifier());
+                                        h.updateAffectedReservation(day);
+                                        System.out.println("Price Modified");
+                                    }
+                                }
+                                exit = true;
+                                break;
+
+                            case 8:
                                 exit = true;
                                 break;
 
@@ -414,7 +412,10 @@ public class HotelSystem {
                        }
                    }
                    if (selectedRoom != null) {
-                       boolean reservationAdded = selectedHotel.addReservation(guestName, checkInDate, checkOutDate, roomToBook);
+                       System.out.println("Input Discount Code: ");
+                       System.out.println("Type 'N/A' if none ");
+                       String discountCode = Scanner.nextLine();
+                       boolean reservationAdded = selectedHotel.addReservation(selectedHotel,guestName, checkInDate, checkOutDate, roomToBook, discountCode);
                        if (reservationAdded) {
                            System.out.println("Room Successfully Booked!");
                            exit = true;
@@ -437,14 +438,11 @@ public class HotelSystem {
 
        } while (!exit);
 
-
-
-
-
-
-
-
    }
+
+    public ArrayList<Hotel> getHotelList(){
+        return hotelList;
+    }
 
 }
 
