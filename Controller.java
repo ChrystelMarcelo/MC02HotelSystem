@@ -133,6 +133,13 @@ public class Controller implements ActionListener, DocumentListener {
             }
         });
 
+        view.getViewSelectRoom().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleSelectRoom(e);
+            }
+        });
+
 
     }
 
@@ -158,6 +165,25 @@ public class Controller implements ActionListener, DocumentListener {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(view, "Invalid date format. Please enter a valid date.");
         }
+    }
+
+    private void handleSelectRoom(ActionEvent e){
+        String selectedHotelName = view.getViewHotelName();
+        Hotel selectedHotel = null;
+        for (Hotel hotel : model.getHotelList()) {
+            if (hotel.getHotelName().equals(selectedHotelName)) {
+                selectedHotel = hotel;
+                break;
+            }
+        }
+
+        if (selectedHotel == null) {
+            JOptionPane.showMessageDialog(view, "Hotel not found.");
+            return;
+        }
+        String roomName = view.getSelectRoomName();
+        String selectedRoom = selectedHotel.printRoomDetails(roomName);
+        view.displaySelectedRoom(selectedRoom);
     }
 
 
@@ -216,6 +242,7 @@ public class Controller implements ActionListener, DocumentListener {
         return true;
     }
 
+    // For Creating New Window
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Create Hotel")){
