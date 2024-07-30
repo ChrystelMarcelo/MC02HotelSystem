@@ -1,6 +1,6 @@
 public class Deluxe extends Room{
     /**
-     * Constructs a Room object with a given room name
+     * Constructs a Deluxe Room object with a given room name
      *
      * @param roomName
      */
