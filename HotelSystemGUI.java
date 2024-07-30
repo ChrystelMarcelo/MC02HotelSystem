@@ -1,643 +1,1451 @@
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionEvent;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class Controller implements ActionListener, DocumentListener {
-    private HotelSystemGUI view;
-    private HotelSystem model;
+/**
+ * 
+ */
+public class HotelSystemGUI extends JFrame {
 
 
-    public Controller(HotelSystemGUI gui, HotelSystem hotelSystem){
-        this.view = gui;
-        this.model = hotelSystem;
+    private JButton addHotel;
+    private JButton viewHotel;
+    private JButton manageHotel;
+    private JButton bookRoom;
+    private JButton backButton;
+    private JButton createHotel;
 
-        updateView();
-        initializeViewHotelListeners();
-        initializeManageHotelListeners();
-        initializeBookRoomListener();
-        gui.setActionListener(this);
-        gui.setDocumentListener(this);
+    private JButton highLevelInfo;
+    private JButton lowLevelInfo;
+    private JButton availableRooms;
+    private JButton selectRoom;
+    private JButton selectReservation;
+    private JButton viewAvailableRooms;
+    private JButton viewSelectRoom;
+    private JButton viewSelectReservation;
+
+    private JButton changeHotelName;
+    private JButton addRoom;
+    private JButton removeRoom;
+    private JButton updateBasePrice;
+    private JButton removeReservation;
+    private JButton removeHotel;
+    private JButton modifyDatePrice;
+
+    private JButton changeHotel;
+    private JButton standardRoom;
+    private JButton deluxeRoom;
+    private JButton executiveRoom;
+
+    private JButton removeNameRoom;
+
+    private JButton reserveRoom;
+    private JButton updateBasePriceRoom;
+    private JButton removeGuestReservation;
+    private JButton removeHotelName;
+    private JButton changeDatePrice;
+
+    private JTextField tfHotelName;
+    private JTextField tfViewHotelName;
+    private JTextField tfRoomCount;
+    private JTextField tfDate;
+    private JTextField tfRoomName;
+    private JTextField tfGuestName;
+    private JTextField tfPriceModifier;
+    private JTextField tfViewRoomSelect;
+    private JTextField tfManageHotelName;
+    private JTextField tfChangeHotelName;
+    private JTextField tfAddRoomName;
+    private JTextField tfRemoveRoomName;
+    private JTextField tfUpdateBasePrice;
+    private JTextField tfRemoveReservation;
+    private JTextField tfRemoveHotel;
+    private JTextField tfModifyDatePrice;
+    private JTextField tfDateForModifier;
+
+    private JTextField tfBookHotelName;
+    private JTextField tfBookGuestName;
+    private JTextField tfCheckIn;
+    private JTextField tfCheckOut;
+    private JTextField tfRoomToBook;
+    private JTextField tfDiscountCode;
+
+
+    private JTextArea taAvailability;
+    private JTextArea taRoomInfo;
+    private JTextArea taReservationInfo;
+
+
+    /**
+     * 
+     */
+    HotelSystemGUI(){
+        super("Hotel System");
+        HotelMenuGUI();
     }
 
-    public void updateView(){
+    /**
+     * 
+     */
+    public void HotelMenuGUI(){
+        setLayout(new BorderLayout());
 
-    }
+        setSize(500, 600);
+        init();
 
-    //NEW WINDOWS
-    private void createHotelView(){
-        view.createHotelWindow("Add Hotel");
-    }
-
-    private void viewHotelView(){
-        view.viewHotelWindow("View Hotel");
-        //model.viewHotel();
-    }
-
-    private void manageHotelView(){
-        view.manageHotelView("Manage Hotel");
-    }
-
-    private void bookRoomView(){
-        view.bookRoomView("Book Room");
-    }
-
-    private void availableRoomView(){
-        view.viewAvailableRooms("Available Rooms");
-    }
-
-    private void selectRoomView(){
-        view.viewSelectRoom("Room Information");
-    }
-
-    private void selectReservationView(){
-        view.viewSelectReservation("Reservation Information");
-    }
-
-    private void changeHotelNameView(){
-        String selectHotelName = view.getManageHotelName();
-        Hotel selectedHotel = null;
-
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
-
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
-        view.changeHotelNameView("Change Hotel Name");
-    }
-
-    private void addRoomView(){
-        String selectHotelName = view.getManageHotelName();
-        Hotel selectedHotel = null;
-
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
-
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
-        view.addRoomView("Add Room");
-    }
-
-    private void removeRoomView(){
-        view.removeRoomView("Remove Room");
-    }
-
-    private void updateRoomBasePriceView(){
-        view.updateBasePriceView("Update Room Base Price");
-    }
-
-    private void removeReservationView(){
-        view.removeReservationView("Remove Reservation");
-    }
-
-    private void removeHotelView(){
-        view.removeHotelView("Remove Hotel");
-    }
-
-    private void modifyDatePriceView(){
-        view.modifyDatePrice("Modify Date Price");
+        setVisible(true);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 
+    /**
+     * 
+     */
+    private void init(){
+        //NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-    // CREATE HOTEL CONTROLLER
-    private void createHotel() {
-        String hotelName = view.getHotelName();
-        int roomCount = view.getRoomCount();
+        JLabel lblHotel = new JLabel("Hotel Menu");
+        lblHotel.setForeground(Color.white);
+        lblHotel.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblHotel);
 
-        if (hotelName == null || hotelName.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Hotel name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        this.add(panelNorth, BorderLayout.NORTH);
 
-        if (roomCount == -1) {
-            return;
-        }
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
 
-        boolean hotelExist = false;
-        for (Hotel h : model.getHotelList()) {
-            if (h.hotelFound(hotelName)) {
-                hotelExist = true;
-                break;
-            }
-        }
 
-        if (hotelExist) {
-            JOptionPane.showMessageDialog(view, "Hotel already exists! Please input another hotel name.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            model.createHotel(hotelName, roomCount);
-            JOptionPane.showMessageDialog(view, hotelName + " hotel successfully added in the system", "Success", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
+        // HOTEL MENU BUTTONS
+        addHotel = new JButton("Create Hotel");
+        addHotel.setBounds(100, 50, 300, 50);
+        panelCenter.add(addHotel);
+        viewHotel = new JButton("View Hotel");
+        viewHotel.setBounds(100, 120, 300, 50);
+        panelCenter.add(viewHotel);
+        manageHotel = new JButton("Manage Hotel");
+        manageHotel.setBounds(100, 190, 300, 50);
+        panelCenter.add(manageHotel);
+        bookRoom = new JButton("Book Room");
+        bookRoom.setBounds(100, 260, 300, 50);
+        panelCenter.add(bookRoom);
 
-    //VIEW HOTEL CONTROLLERS
+        //CREATE HOTEL BUTTON
+        createHotel = new JButton("Confirm Hotel");
 
-    private void initializeViewHotelListeners() {
-        view.getHighLevelInfoButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleViewHotel(true);
-            }
-        });
+        // VIEW HOTEL BUTTONS
+        highLevelInfo = new JButton("High Info");
+        lowLevelInfo = new JButton("Low Info");
+        availableRooms = new JButton("Available Rooms");
+        selectRoom = new JButton("Select Room");
+        selectReservation = new JButton("Select Reservation");
+        viewAvailableRooms = new JButton("View Rooms");
+        viewSelectRoom = new JButton("View Room");
+        viewSelectReservation = new JButton("View Reservation");
 
-        view.getLowLevelInfoButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleViewHotel(false);
-            }
-        });
+        //MANAGE HOTEL BUTTONS
+        changeHotelName = new JButton("Change Hotel Name");
+        addRoom = new JButton("Add Room");
+        removeRoom = new JButton("Remove Room");
+        updateBasePrice = new JButton("Update Room Base Price");
+        removeReservation = new JButton("Remove Reservation");
+        removeHotel = new JButton("Remove Hotel");
+        modifyDatePrice = new JButton("Modify Date Price");
 
-        view.getViewAvailableRooms().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAvailableRooms(e);
-            }
-        });
+        // change hotel name button
+        changeHotel = new JButton("Change Hotel Name");
 
-        view.getViewSelectRoom().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleSelectRoom(e);
-            }
-        });
+        //add room button
+        standardRoom = new JButton("Add Standard Room");
+        deluxeRoom = new JButton("Add Deluxe Room");
+        executiveRoom = new JButton("Add Executive Room");
 
-        view.getViewSelectReservation().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleSelectReservation(e);
-            }
-        });
-    }
+        //removeRoom
+        removeNameRoom = new JButton("Remove Room No.");
 
-    private void handleViewHotel(boolean isHighLevel){
-        String selectedHotelName = view.getViewHotelName();
-        Hotel selectedHotel = null;
+        //updateBasePrice
+        updateBasePriceRoom = new JButton("Update Price");
 
-        for (Hotel hotel : model.getHotelList()) {
-            if (hotel.hotelFound(selectedHotelName)) {
-                selectedHotel = hotel;
-                break;
-            }
-        }
+        //removeReservation
+        removeGuestReservation = new JButton("Remove Booking");
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
+        //removeHotel
+        removeHotelName = new JButton("Discard Hotel");
 
-        if (isHighLevel) {
-            displayHighLevelInfo(selectedHotel);
-        } else {
-            displayLowLevelInfo(selectedHotel);
-        }
-    }
+        //modifyDatePrice
+        changeDatePrice = new JButton("Modify Price");
 
-    private void displayLowLevelInfo(Hotel hotel){
-        view.lowInfoView("Low Level Information");
-    }
+        //Book Room
+        reserveRoom = new JButton("Book Room");
 
-    private void displayHighLevelInfo(Hotel hotel){
-        view.highInfoView("High Level Information", hotel.getHotelName(), hotel.getRoomCount());
-    }
-
-    private void handleAvailableRooms(ActionEvent e){
-        String selectedHotelName = view.getViewHotelName();
-        Hotel selectedHotel = null;
-        for (Hotel hotel : model.getHotelList()) {
-            if (hotel.getHotelName().equals(selectedHotelName)) {
-                selectedHotel = hotel;
-                break;
-            }
-        }
-
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
-
-        try {
-            int date = view.getTfDate();
-            String availability = selectedHotel.displayAvailableAndBookedRooms(date);
-            view.displayAvailability(availability);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(view, "Invalid date format. Please enter a valid date.");
-        }
-    }
-
-    private void handleSelectRoom(ActionEvent e){
-        String selectedHotelName = view.getViewHotelName();
-        String roomName = view.getSelectRoomName();
-        Hotel selectedHotel = null;
-        for (Hotel hotel : model.getHotelList()) {
-            if (hotel.getHotelName().equals(selectedHotelName)) {
-                selectedHotel = hotel;
-                break;
-            }
-        }
-
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
-
-        Room foundRoom = null;
-        for (Room r : selectedHotel.getRoomList()) {
-            if (r.getRoomName().equalsIgnoreCase(roomName)) {
-                foundRoom = r;
-                break;
-            }
-        }
-
-        if (foundRoom == null) {
-            JOptionPane.showMessageDialog(view, "Room doesn't exist!");
-        } else {
-            String selectedRoom = selectedHotel.printRoomDetails(roomName);
-            view.displaySelectedRoom(selectedRoom);
-        }
+        this.add(panelCenter, BorderLayout.CENTER);
     }
 
 
+    /**
+     * @param title 
+     */
+    public void createHotelWindow(String title){
+        JFrame createHotelFrame = new JFrame(title);
+        createHotelFrame.setSize(500, 600);
+        createHotelFrame.setLayout(new BorderLayout());
 
-    private void handleSelectReservation(ActionEvent e){
-        String selectedHotelName = view.getViewHotelName();
-        Hotel selectedHotel = null;
-        for (Hotel hotel : model.getHotelList()) {
-            if (hotel.getHotelName().equals(selectedHotelName)) {
-                selectedHotel = hotel;
-                break;
-            }
-        }
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
-        String reservationName = view.getSelectReservationName();
-        String selectedReservation = selectedHotel.printReservationDetails(reservationName);
-        if(selectedReservation.equals("Reservation Not Found.")){
-            JOptionPane.showMessageDialog(view, "Reservation Not Found.");
-        }
-        view.displaySelectedReservation(selectedReservation);
+        inCreateHotel(createHotelFrame);
 
+
+        createHotelFrame.setVisible(true);
+        setResizable(false);
+        createHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
 
-    // MANAGE HOTEL CONTROLLERS
+    /**
+     * @param frame 
+     */
+    private void inCreateHotel(JFrame frame){
+        //NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-    private void initializeManageHotelListeners() {
-        view.getChangeHotelNameButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleChangeHotelName();
-            }
-        });
+        JLabel lbladdHotel = new JLabel("Create Hotel");
+        lbladdHotel.setForeground(Color.white);
+        lbladdHotel.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lbladdHotel);
 
-        view.getStandardRoomButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAddStandardRoom();
-            }
-        });
+        frame.add(panelNorth, BorderLayout.NORTH);
 
-        view.getDeluxeRoomButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAddDeluxeRoom();
-            }
-        });
+        //CENTER PANEL
 
-        view.getExecutiveRoomButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleAddExecutiveRoom();
-            }
-        });
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
 
-        view.getRemoveRoomButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleRemoveRoom();
-            }
-        });
+        JLabel lblHotelName = new JLabel("Enter Hotel Name: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(175, 50, 300, 50);
+        panelCenter.add(lblHotelName);
 
-        view.getUpdateBasePriceButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleUpdateBasePrice();
-            }
-        });
+        tfHotelName = new JTextField(20);
+        tfHotelName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfHotelName);
+
+        JLabel lblRoomCount = new JLabel("Enter Number of Rooms: ");
+        lblRoomCount.setForeground(Color.black);
+        lblRoomCount.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblRoomCount.setBounds(175, 150, 300, 50);
+        panelCenter.add(lblRoomCount);
+
+        tfRoomCount = new JTextField(20);
+        tfRoomCount.setBounds(100, 200, 300, 35);
+        panelCenter.add(tfRoomCount);
+
+
+        createHotel.setBounds(100, 350, 300, 50);
+        panelCenter.add(createHotel);
+
+        frame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> frame.dispose());
+        panelSouth.add(backButton);
+
+        frame.add(panelSouth, BorderLayout.SOUTH);
     }
 
-    private void handleChangeHotelName(){
-        String selectHotelName = view.getManageHotelName();
-        Hotel selectedHotel = null;
-        String newHotelName = view.getChangeHotelName();
 
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
+    public void viewHotelWindow(String title){
+        JFrame viewHotelFrame = new JFrame(title);
+        viewHotelFrame.setSize(500, 600);
+        viewHotelFrame.setLayout(new BorderLayout());
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        } else if(selectedHotel.hotelExists(newHotelName, model.getHotelList())){
-            JOptionPane.showMessageDialog(view, "Hotel Name Already Exists!");
-            return;
-        }
+        inViewHotel(viewHotelFrame);
 
-
-        selectedHotel.setHotelName(newHotelName);
-        JOptionPane.showMessageDialog(view," Hotel Name Changed Successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-
+        viewHotelFrame.setVisible(true);
+        setResizable(false);
+        viewHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    private void handleAddStandardRoom(){
-        String selectHotelName = view.getManageHotelName();
-        String newRoomName = view.getSelectRoomName();
-        Hotel selectedHotel = null;
+    private void inViewHotel(JFrame frame){
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
+        JLabel lblTitle = new JLabel("View Hotel");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
+        frame.add(panelNorth, BorderLayout.NORTH);
 
-        for(Room r: selectedHotel.getRoomList()){
-            if(r.getRoomName().equalsIgnoreCase(newRoomName)){
-                JOptionPane.showMessageDialog(view, "Room Already Exists!");
-                return;
-            }
+        //CENTER PANEL
 
-        }
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
 
-        if(selectedHotel.getRoomList().size() < 50){
-            selectedHotel.addStandardRoom(newRoomName);
-            JOptionPane.showMessageDialog(view,"Standard Room Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Standard Room Successfully Added");
-        }
+        JLabel lblHotelName = new JLabel("Enter Selected Hotel Name: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(150, 50, 300, 50);
+        panelCenter.add(lblHotelName);
 
+        tfViewHotelName = new JTextField(20);
+        tfViewHotelName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfViewHotelName);
+
+
+
+        highLevelInfo.setBounds(100, 250, 300, 50);
+        panelCenter.add(highLevelInfo);
+
+
+        lowLevelInfo.setBounds(100, 300, 300, 50);
+        panelCenter.add(lowLevelInfo);
+
+        frame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> frame.dispose());
+        panelSouth.add(backButton);
+
+        frame.add(panelSouth, BorderLayout.SOUTH);
 
 
     }
 
-    private void handleAddDeluxeRoom(){
-        String selectHotelName = view.getManageHotelName();
-        String newRoomName = view.getSelectRoomName();
-        Hotel selectedHotel = null;
+    public void highInfoView(String title, String hotelName, int roomCount){
+        JFrame highInfoFrame = new JFrame(title);
+        highInfoFrame.setSize(500, 600);
+        highInfoFrame.setLayout(new BorderLayout());
 
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
+        //North PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
+        JLabel lblTitle = new JLabel("High Level Information");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
 
-        for(Room r: selectedHotel.getRoomList()){
-            if(r.getRoomName().equalsIgnoreCase(newRoomName)){
-                JOptionPane.showMessageDialog(view, "Room Already Exists!");
-                return;
-            }
+        highInfoFrame.add(panelNorth, BorderLayout.NORTH);
 
-        }
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
+        panelCenter.setBackground(Color.white);
 
-        if(selectedHotel.getRoomList().size() < 50){
-            selectedHotel.addDeluxeRoom(newRoomName);
-            JOptionPane.showMessageDialog(view,"Deluxe Room Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Deluxe Room Successfully Added");
-        }
+        JLabel lblHotelInfo = new JLabel("<html>Hotel Name: " + hotelName + "<br>Total Number of Rooms: " + roomCount + "</html>");
+        lblHotelInfo.setForeground(Color.black);
+        lblHotelInfo.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelCenter.add(lblHotelInfo);
+
+        highInfoFrame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> highInfoFrame.dispose());
+        panelSouth.add(backButton);
+
+        highInfoFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        highInfoFrame.setVisible(true);
+        setResizable(false);
+        highInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void lowInfoView(String title){
+        JFrame lowInfoFrame = new JFrame(title);
+        lowInfoFrame.setSize(500, 600);
+        lowInfoFrame.setLayout(new BorderLayout());
+
+        inLowInfo(lowInfoFrame);
+
+        lowInfoFrame.setVisible(true);
+        setResizable(false);
+        lowInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void inLowInfo(JFrame frame){
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Low Level Information");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        frame.add(panelNorth, BorderLayout.NORTH);
+
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        availableRooms.setBounds(100, 50, 300, 50);
+        panelCenter.add(availableRooms);
+
+        selectRoom.setBounds(100, 120, 300, 50);
+        panelCenter.add(selectRoom);
+
+        selectReservation.setBounds(100, 190, 300, 50);
+        panelCenter.add(selectReservation);
+
+        frame.add(panelCenter, BorderLayout.CENTER);
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> frame.dispose());
+        panelSouth.add(backButton);
+
+        frame.add(panelSouth, BorderLayout.SOUTH);
+    }
+
+    public void viewAvailableRooms(String title){
+        JFrame availableRoomsFrame = new JFrame(title);
+        availableRoomsFrame.setSize(500, 600);
+        availableRoomsFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Available and Booked Rooms");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        availableRoomsFrame.add(panelNorth, BorderLayout.NORTH);
+
+        // CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblDate = new JLabel("Enter Date To Check Availability: ");
+        lblDate.setForeground(Color.black);
+        lblDate.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblDate.setBounds(130, 50, 300, 50);
+        panelCenter.add(lblDate);
+
+        tfDate = new JTextField();
+        tfDate.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfDate);
+
+
+        viewAvailableRooms.setBounds(100, 150, 300, 50);
+        panelCenter.add(viewAvailableRooms);
+
+        taAvailability = new JTextArea();
+        taAvailability.setEditable(false);
+        taAvailability.setLineWrap(true);
+        taAvailability.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(taAvailability);
+        scrollPane.setBounds(100, 250, 300, 200);
+
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panelCenter.add(scrollPane);
+
+        availableRoomsFrame.add(panelCenter, BorderLayout.CENTER);
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> availableRoomsFrame.dispose());
+        panelSouth.add(backButton);
+
+        availableRoomsFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        availableRoomsFrame.setVisible(true);
+        setResizable(false);
+        availableRoomsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void viewSelectRoom(String title){
+        JFrame selectedRoomFrame = new JFrame(title);
+        selectedRoomFrame.setSize(500, 600);
+        selectedRoomFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Room Information");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        selectedRoomFrame.add(panelNorth, BorderLayout.NORTH);
+
+        // CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblDate = new JLabel("Enter Room Name to View: ");
+        lblDate.setForeground(Color.black);
+        lblDate.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblDate.setBounds(150, 50, 300, 50);
+        panelCenter.add(lblDate);
+
+        tfViewRoomSelect = new JTextField();
+        tfViewRoomSelect.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfViewRoomSelect);
+
+
+        viewSelectRoom.setBounds(100, 150, 300, 50);
+        panelCenter.add(viewSelectRoom);
+
+        taRoomInfo = new JTextArea();
+        taRoomInfo.setEditable(false);
+        taRoomInfo.setLineWrap(true);
+        taRoomInfo.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(taRoomInfo);
+        scrollPane.setBounds(80, 250, 350, 200);
+
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panelCenter.add(scrollPane);
+
+        selectedRoomFrame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> selectedRoomFrame.dispose());
+        panelSouth.add(backButton);
+
+        selectedRoomFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        selectedRoomFrame.setVisible(true);
+        setResizable(false);
+        selectedRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void viewSelectReservation(String title){
+        JFrame selectedReservationFrame = new JFrame(title);
+        selectedReservationFrame.setSize(500, 600);
+        selectedReservationFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Reservation Information");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        selectedReservationFrame.add(panelNorth, BorderLayout.NORTH);
+
+        // CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblDate = new JLabel("Enter Guest Name Under Reservation: ");
+        lblDate.setForeground(Color.black);
+        lblDate.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblDate.setBounds(110, 50, 300, 50);
+        panelCenter.add(lblDate);
+
+        tfGuestName = new JTextField();
+        tfGuestName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfGuestName);
+
+
+        viewSelectReservation.setBounds(100, 150, 300, 50);
+        panelCenter.add(viewSelectReservation);
+
+        taReservationInfo = new JTextArea();
+        taReservationInfo .setEditable(false);
+        taReservationInfo .setLineWrap(true);
+        taReservationInfo .setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(taReservationInfo);
+        scrollPane.setBounds(100, 250, 300, 200);
+
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panelCenter.add(scrollPane);
+
+        selectedReservationFrame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> selectedReservationFrame.dispose());
+        panelSouth.add(backButton);
+
+        selectedReservationFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        selectedReservationFrame.setVisible(true);
+        setResizable(false);
+        selectedReservationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+
+
+
+    public void manageHotelView(String title){
+        JFrame manageHotelFrame = new JFrame(title);
+        manageHotelFrame.setSize(500, 600);
+        manageHotelFrame.setLayout(new BorderLayout());
+
+
+        inManageHotel(manageHotelFrame);
+
+
+        manageHotelFrame.setVisible(true);
+        setResizable(false);
+        manageHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    private void inManageHotel(JFrame frame){
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Manage Hotel");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        frame.add(panelNorth, BorderLayout.NORTH);
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Enter Hotel Name to Manage: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(140, 10, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfManageHotelName = new JTextField(20);
+        tfManageHotelName.setBounds(100, 45, 300, 35);
+        panelCenter.add(tfManageHotelName);
+
+
+        changeHotelName.setBounds(100, 100, 300, 50);
+        panelCenter.add(changeHotelName);
+
+
+        addRoom.setBounds(100, 150, 300, 50);
+        panelCenter.add(addRoom);
+
+
+        removeRoom.setBounds(100, 200, 300, 50);
+        panelCenter.add(removeRoom);
+
+
+        updateBasePrice.setBounds(100, 250, 300, 50);
+        panelCenter.add(updateBasePrice);
+
+
+        removeReservation.setBounds(100, 300, 300, 50);
+        panelCenter.add(removeReservation);
+
+
+        removeHotel.setBounds(100, 350, 300, 50);
+        panelCenter.add(removeHotel);
+
+
+        modifyDatePrice.setBounds(100, 400, 300, 50);
+        panelCenter.add(modifyDatePrice);
+
+        frame.add(panelCenter, BorderLayout.CENTER);
+
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> frame.dispose());
+        panelSouth.add(backButton);
+
+        frame.add(panelSouth, BorderLayout.SOUTH);
 
     }
 
-    private void handleAddExecutiveRoom(){
-        String selectHotelName = view.getManageHotelName();
-        String newRoomName = view.getSelectRoomName();
-        Hotel selectedHotel = null;
 
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
+    public void changeHotelNameView(String title){
+        JFrame changeHotelNameFrame = new JFrame(title);
+        changeHotelNameFrame.setSize(500, 600);
+        changeHotelNameFrame.setLayout(new BorderLayout());
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-        for(Room r: selectedHotel.getRoomList()){
-            if(r.getRoomName().equalsIgnoreCase(newRoomName)){
-                JOptionPane.showMessageDialog(view, "Room Already Exists!");
-                return;
-            }
+        JLabel lblTitle = new JLabel("Change Hotel Name");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
 
-        }
+        changeHotelNameFrame.add(panelNorth, BorderLayout.NORTH);
 
-        if(selectedHotel.getRoomList().size() < 50){
-            selectedHotel.addExecutiveRoom(newRoomName);
-            JOptionPane.showMessageDialog(view,"Executive Room Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Executive Room Successfully Added");
-        }
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
 
+        JLabel lblHotelName = new JLabel("Enter New Hotel Name: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(150, 50, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfChangeHotelName = new JTextField(20);
+        tfChangeHotelName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfChangeHotelName);
+
+        changeHotel.setBounds(100, 200, 300, 50);
+        panelCenter.add(changeHotel);
+
+
+
+        changeHotelNameFrame.add(panelCenter, BorderLayout.CENTER);
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> changeHotelNameFrame.dispose());
+        panelSouth.add(backButton);
+
+        changeHotelNameFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        changeHotelNameFrame.setVisible(true);
+        setResizable(false);
+        changeHotelNameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    private void handleRemoveRoom(){
-        String selectHotelName = view.getManageHotelName();
-        String selectRemoveName = view.getRemoveRoomName();
-        Hotel selectedHotel = null;
+    public void addRoomView(String title){
 
-        for(Hotel hotel: model.getHotelList()){
-            if(hotel.hotelFound(selectHotelName)){
-                selectedHotel = hotel;
-                break;
-            }
-        }
+        JFrame addRoomViewFrame = new JFrame(title);
+        addRoomViewFrame.setSize(500, 600);
+        addRoomViewFrame.setLayout(new BorderLayout());
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-        if(selectedHotel.removeRoom(selectRemoveName)){
-            JOptionPane.showMessageDialog(view,"Room Removed Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Room Removed Successfully!");
-        }else{
-            JOptionPane.showMessageDialog(view, "Could Not Remove Room", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        JLabel lblTitle = new JLabel("Add Room");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+        addRoomViewFrame.add(panelNorth, BorderLayout.NORTH);
 
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Enter New Room Name: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(150, 50, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfAddRoomName = new JTextField(20);
+        tfAddRoomName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfAddRoomName);
+
+
+        standardRoom.setBounds(100, 200, 300, 50);
+        panelCenter.add(standardRoom);
+
+        deluxeRoom.setBounds(100, 250, 300, 50);
+        panelCenter.add(deluxeRoom);
+
+        executiveRoom.setBounds(100, 300, 300, 50);
+        panelCenter.add(executiveRoom);
+
+
+        addRoomViewFrame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> addRoomViewFrame.dispose());
+        panelSouth.add(backButton);
+
+        addRoomViewFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+
+        addRoomViewFrame.setVisible(true);
+        setResizable(false);
+        addRoomViewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    private void handleUpdateBasePrice(){
-        String selectedHotelName = view.getManageHotelName();
+    public void removeRoomView(String title){
+        JFrame removeRoomFrame = new JFrame(title);
+        removeRoomFrame.setSize(500, 600);
+        removeRoomFrame.setLayout(new BorderLayout());
 
-        Hotel selectedHotel = null;
-        for (Hotel hotel : model.getHotelList()) {
-            if (hotel.getHotelName().equals(selectedHotelName)) {
-                selectedHotel = hotel;
-                break;
-            }
-        }
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
 
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
+        JLabel lblTitle = new JLabel("Remove Room");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
 
-        try{
-            double updatePrice = view.getUpdateBasePrice();
-            if(selectedHotel.updateBasePrice(updatePrice)){
-                JOptionPane.showMessageDialog(view, "Base Price Updated Sucessfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                JOptionPane.showMessageDialog(view, "Error: Price Invalid/ Reservation exists");
-            }
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(view, "Invalid Price. Please enter valid price");
-        }
+        removeRoomFrame.add(panelNorth, BorderLayout.NORTH);
+
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Enter Room Name To Remove: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(130, 50, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfRemoveRoomName = new JTextField(20);
+        tfRemoveRoomName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfRemoveRoomName);
+
+        removeNameRoom.setBounds(100, 200, 300, 50);
+        panelCenter.add(removeNameRoom);
+
+        removeRoomFrame.add(panelCenter, BorderLayout.CENTER);
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> removeRoomFrame.dispose());
+        panelSouth.add(backButton);
+
+        removeRoomFrame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        removeRoomFrame.setVisible(true);
+        setResizable(false);
+        removeRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void updateBasePriceView(String title){
+        JFrame updateBasePriceFrame = new JFrame(title);
+        updateBasePriceFrame.setSize(500, 600);
+        updateBasePriceFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Update Base Price");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        updateBasePriceFrame.add(panelNorth, BorderLayout.NORTH);
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Enter New Base Price: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(150, 50, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfUpdateBasePrice = new JTextField(20);
+        tfUpdateBasePrice.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfUpdateBasePrice);
+
+        updateBasePriceRoom.setBounds(100, 200, 300, 50);
+        panelCenter.add(updateBasePriceRoom);
+
+        updateBasePriceFrame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> updateBasePriceFrame.dispose());
+        panelSouth.add(backButton);
+
+        updateBasePriceFrame.add(panelSouth, BorderLayout.SOUTH);
+
+        updateBasePriceFrame.setVisible(true);
+        setResizable(false);
+        updateBasePriceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void removeReservationView(String title){
+        JFrame removeReservationFrame = new JFrame(title);
+        removeReservationFrame.setSize(500, 600);
+        removeReservationFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Remove Reservation");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        removeReservationFrame.add(panelNorth, BorderLayout.NORTH);
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Enter Guest Name Under Reservation: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(105, 50, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfRemoveReservation = new JTextField(20);
+        tfRemoveReservation.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfRemoveReservation);
+
+        removeGuestReservation.setBounds(100, 200, 300, 50);
+        panelCenter.add(removeGuestReservation);
+
+        removeReservationFrame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> removeReservationFrame.dispose());
+        panelSouth.add(backButton);
+
+        removeReservationFrame.add(panelSouth, BorderLayout.SOUTH);
+
+        removeReservationFrame.setVisible(true);
+        setResizable(false);
+        removeReservationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void removeHotelView(String title){
+        JFrame removeHotelFrame = new JFrame(title);
+        removeHotelFrame.setSize(500, 600);
+        removeHotelFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Remove Hotel");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        removeHotelFrame.add(panelNorth, BorderLayout.NORTH);
+
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Confirm Remove Hotel? ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(135, 50, 300, 50);
+        panelCenter.add(lblHotelName);
+
+
+        removeHotelName.setBounds(100, 200, 300, 50);
+        panelCenter.add(removeHotelName);
+
+        removeHotelFrame.add(panelCenter, BorderLayout.CENTER);
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> removeHotelFrame.dispose());
+        panelSouth.add(backButton);
+
+        removeHotelFrame.add(panelSouth, BorderLayout.SOUTH);
+
+        removeHotelFrame.setVisible(true);
+        setResizable(false);
+        removeHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void modifyDatePrice(String title){
+        JFrame modifyDatePriceFrame = new JFrame(title);
+        modifyDatePriceFrame.setSize(500, 600);
+        modifyDatePriceFrame.setLayout(new BorderLayout());
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Modify Date Price");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+        modifyDatePriceFrame.add(panelNorth, BorderLayout.NORTH);
+
+
+        //CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+
+        JLabel lblDate = new JLabel("Enter day(1-31): ");
+        lblDate.setForeground(Color.black);
+        lblDate.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblDate.setBounds(110, 30, 300, 50);
+        panelCenter.add(lblDate);
+
+        tfDateForModifier = new JTextField(20);
+        tfDateForModifier.setBounds(100, 70, 300, 35);
+        panelCenter.add(tfDateForModifier);
+
+        JLabel lblPriceModifier = new JLabel("Enter Price Modifier: ");
+        lblPriceModifier.setForeground(Color.black);
+        lblPriceModifier.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblPriceModifier.setBounds(110, 110, 300, 50);
+        panelCenter.add(lblPriceModifier);
+
+        tfPriceModifier = new JTextField(20);
+        tfPriceModifier.setBounds(100, 150, 300, 35);
+        panelCenter.add(tfPriceModifier);
+
+        changeDatePrice.setBounds(100, 250, 300, 50);
+        panelCenter.add(changeDatePrice);
+
+        modifyDatePriceFrame.add(panelCenter, BorderLayout.CENTER);
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> modifyDatePriceFrame.dispose());
+        panelSouth.add(backButton);
+
+        modifyDatePriceFrame.add(panelSouth, BorderLayout.SOUTH);
+
+        modifyDatePriceFrame.setVisible(true);
+        setResizable(false);
+        modifyDatePriceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+    
+    public void bookRoomView(String title){
+        JFrame bookRoomFrame = new JFrame(title);
+        bookRoomFrame.setSize(500, 600);
+        bookRoomFrame.setLayout(new BorderLayout());
+
+
+        inBookRoom(bookRoomFrame);
+
+
+        bookRoomFrame.setVisible(true);
+        setResizable(false);
+        bookRoomFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+    }
+
+    private void inBookRoom(JFrame frame){
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new FlowLayout());
+        panelNorth.setBackground(Color.PINK);
+
+        JLabel lblTitle = new JLabel("Book Room");
+        lblTitle.setForeground(Color.white);
+        lblTitle.setFont(new Font("Verdana", Font.BOLD, 20));
+        panelNorth.add(lblTitle);
+
+
+        // CENTER PANEL
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
+        panelCenter.setBackground(Color.white);
+
+        JLabel lblHotelName = new JLabel("Enter Hotel To Book Room: ");
+        lblHotelName.setForeground(Color.black);
+        lblHotelName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblHotelName.setBounds(150, 5, 300, 50);
+        panelCenter.add(lblHotelName);
+
+        tfBookHotelName = new JTextField(20);
+        tfBookHotelName.setBounds(100, 40, 300, 35);
+        panelCenter.add(tfBookHotelName);
+
+        JLabel lblGuestName = new JLabel("Enter Guest Name: ");
+        lblGuestName.setForeground(Color.black);
+        lblGuestName.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblGuestName.setBounds(175, 70, 300, 50);
+        panelCenter.add(lblGuestName);
+
+        tfBookGuestName = new JTextField(20);
+        tfBookGuestName.setBounds(100, 105, 300, 35);
+        panelCenter.add(tfBookGuestName);
+
+
+        JLabel lblCheckIn = new JLabel("Check-In Date: ");
+        lblCheckIn.setForeground(Color.black);
+        lblCheckIn.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblCheckIn.setBounds(190, 140, 300, 50);
+        panelCenter.add(lblCheckIn);
+
+        tfCheckIn = new JTextField(20);
+        tfCheckIn.setBounds(100, 175, 300, 35);
+        panelCenter.add(tfCheckIn);
+
+        JLabel lblCheckOut = new JLabel("Check-Out Date: ");
+        lblCheckOut.setForeground(Color.black);
+        lblCheckOut.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblCheckOut.setBounds(190, 210, 300, 50);
+        panelCenter.add(lblCheckOut);
+
+        tfCheckOut = new JTextField(20);
+        tfCheckOut.setBounds(100, 245, 300, 35);
+        panelCenter.add(tfCheckOut);
+
+
+        JLabel lblroomBook = new JLabel("Room To Book ");
+        lblroomBook.setForeground(Color.black);
+        lblroomBook.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblroomBook.setBounds(190, 280, 300, 50);
+        panelCenter.add(lblroomBook);
+
+        tfRoomToBook = new JTextField(20);
+        tfRoomToBook.setBounds(100, 315, 300, 35);
+        panelCenter.add(tfRoomToBook);
+
+        JLabel lblDiscountCode = new JLabel("Discount Code ");
+        lblDiscountCode.setForeground(Color.black);
+        lblDiscountCode.setFont(new Font("Verdana", Font.PLAIN, 15));
+        lblDiscountCode.setBounds(190, 350, 300, 50);
+        panelCenter.add(lblDiscountCode);
+
+        tfDiscountCode = new JTextField(20);
+        tfDiscountCode.setBounds(100, 385, 300, 35);
+        panelCenter.add(tfDiscountCode);
+
+
+        reserveRoom.setBounds(100, 440, 300, 50);
+        panelCenter.add(reserveRoom);
+
+        frame.add(panelCenter, BorderLayout.CENTER);
+
+
+        //SOUTH PANEL with BACK BUTTON
+        JPanel panelSouth = new JPanel();
+        panelSouth.setLayout(new FlowLayout());
+        panelSouth.setBackground(Color.PINK);
+
+        backButton = new JButton("Back");
+        backButton.addActionListener(e -> frame.dispose());
+        panelSouth.add(backButton);
+
+        frame.add(panelSouth, BorderLayout.SOUTH);
+
+
+        frame.add(panelNorth, BorderLayout.NORTH);
+    }
+
+    
+
+    //CREATE HOTEL FUNCTIONS
+    public String getHotelName(){
+        return tfHotelName.getText();
+    }
+
+    public int getRoomCount() {
+        return Integer.parseInt(tfRoomCount.getText());
+    }
+
+    public JButton getCreateHotelButton(){
+        return createHotel;
+    }
+
+    //VIEW HOTEL FUNCTIONS
+    public String getViewHotelName(){
+        return tfViewHotelName.getText();
+    }
+
+    public int getTfDate(){
+        return Integer.parseInt(tfDate.getText());
+    }
+
+    public void displayAvailability(String availability) {
+        taAvailability.setText(availability);
+        taAvailability.setVisible(true);
+    }
+
+    public void displaySelectedRoom(String selectedRoom){
+        taRoomInfo.setText(selectedRoom);
+        taRoomInfo.setVisible(true);
+    }
+
+    public void displaySelectedReservation(String selectedReservation){
+        taReservationInfo.setText(selectedReservation);
+        taReservationInfo.setVisible(true);
+    }
+
+    public String getSelectRoomName(){
+        return tfViewRoomSelect.getText();
+    }
+
+    public String getSelectReservationName(){
+        return tfGuestName.getText();
+    }
+
+    public JButton getHighLevelInfoButton(){
+
+        return highLevelInfo;
+    }
+
+    public JButton getLowLevelInfoButton(){
+
+        return lowLevelInfo;
+    }
+
+    public JButton getViewAvailableRooms(){
+
+        return viewAvailableRooms;
+    }
+
+    public JButton getViewSelectRoom(){
+        return viewSelectRoom;
+    }
+
+    public JButton getViewSelectReservation(){
+        return viewSelectReservation;
     }
 
 
-
-    // BOOK ROOM CONTROLLERS
-
-    private void initializeBookRoomListener(){
-        view.getBookRoomButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleBookRoom();
-            }
-        });
+    //MANAGE HOTEL FUNCTIONS
+    public String getManageHotelName(){
+        return tfManageHotelName.getText();
     }
 
-    private void handleBookRoom(){
-        String selectedHotelName = view.getBookRoomHotelName();
-        String guestName = view.getBookGuestName();
-        int checkInDate = view.getCheckInDate();
-        int checkOutDate = view.getCheckOutDate();
-        String roomToBook = view.getRoomToBook();;
-        String discountCode = view.getDiscountCode();
-
-        Hotel selectedHotel = null;
-        for (Hotel hotel : model.getHotelList()) {
-            if (hotel.getHotelName().equals(selectedHotelName)) {
-                selectedHotel = hotel;
-                break;
-            }
-        }
-
-        if (selectedHotel == null) {
-            JOptionPane.showMessageDialog(view, "Hotel not found.");
-            return;
-        }
-
-        Room selectedRoom = null;
-        for (Room r : selectedHotel.getRoomList()) {
-            if (r.getRoomName().equalsIgnoreCase(roomToBook)) {
-                selectedRoom = r;
-                break;
-            }
-        }
-
-        if (selectedRoom == null) {
-            JOptionPane.showMessageDialog(view, "Room not found");
-            return;
-        }
-
-        if(checkInDate < 1 || checkInDate > 31){
-            JOptionPane.showMessageDialog(view, "Invalid check-in date. Please enter a date between 1 and 31.");
-        }else if(checkInDate == 31){
-            JOptionPane.showMessageDialog(view, "Can't check in at the end of the month.");
-        }else if(checkOutDate < 1 || checkOutDate > 31){
-            JOptionPane.showMessageDialog(view, "Invalid check-in date. Please enter a date between 1 and 31.");
-        }else if(checkOutDate == 1){
-            JOptionPane.showMessageDialog(view, "Can't check out at the start of the month.");
-        }
-
-
-        boolean reservationAdded = selectedHotel.addReservation(selectedHotel,guestName, checkInDate, checkOutDate, roomToBook, discountCode);
-
-        if(reservationAdded){
-            JOptionPane.showMessageDialog(view, "Room Successfully Booked!", "Success!", JOptionPane.INFORMATION_MESSAGE);
-        }else{
-            JOptionPane.showMessageDialog(view, "Room is not available for the selected dates");
-        }
-
+    public String getChangeHotelName(){
+        return tfChangeHotelName.getText();
     }
 
-    // For Creating New Window
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("Create Hotel")){
-            createHotelView();
-        }else if(e.getActionCommand().equals("View Hotel")){
-            viewHotelView();
-        }else if(e.getActionCommand().equals("Manage Hotel")){
-            manageHotelView();
-        }else if(e.getActionCommand().equals("Book Room")){
-            bookRoomView();
-        }else if(e.getActionCommand().equals("Available Rooms")){
-            availableRoomView();
-        }else if(e.getActionCommand().equals("Select Room")){
-            selectRoomView();
-        }else if(e.getActionCommand().equals("Select Reservation")){
-            selectReservationView();
-        }else if(e.getActionCommand().equals("Change Hotel Name")){
-            changeHotelNameView();
-        }else if(e.getActionCommand().equals("Add Room")){
-            addRoomView();
-        }else if(e.getActionCommand().equals("Remove Room")){
-            removeRoomView();
-        }else if(e.getActionCommand().equals("Update Room Base Price")){
-            updateRoomBasePriceView();
-        }else if(e.getActionCommand().equals("Remove Reservation")){
-            removeReservationView();
-        }else if(e.getActionCommand().equals("Remove Hotel")){
-            removeHotelView();
-        }else if(e.getActionCommand().equals("Modify Date Price")){
-            modifyDatePriceView();
-        }else if(e.getActionCommand().equals("Confirm Hotel")){
-            createHotel();
-        }
+    public String getRemoveRoomName(){
+        return tfRemoveRoomName.getText();
     }
 
-    @Override
-    public void insertUpdate(DocumentEvent e) {
 
+    public double getUpdateBasePrice(){
+        return Double.parseDouble(tfUpdateBasePrice.getText());
     }
 
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-
+    public String getRemoveReservation(){
+        return tfRemoveReservation.getText();
     }
 
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-
+    public int getDateForModifier(){
+        return Integer.parseInt(tfDateForModifier.getText());
     }
+
+    public double getPriceForModifier(){
+        return Double.parseDouble(tfPriceModifier.getText());
+    }
+
+
+    public JButton getChangeHotelNameButton(){
+        return changeHotel;
+    }
+
+    public JButton getAddRoomButton(){
+        return addRoom;
+    }
+
+    public JButton getStandardRoomButton(){
+        return standardRoom;
+    }
+
+    public JButton getDeluxeRoomButton(){
+        return deluxeRoom;
+    }
+
+    public JButton getExecutiveRoomButton(){
+        return executiveRoom;
+    }
+
+    public JButton getRemoveRoomButton(){
+        return removeNameRoom;
+    }
+
+    public JButton getUpdateBasePriceButton(){
+        return updateBasePriceRoom;
+    }
+
+    public JButton getRemoveReservationButton(){
+        return removeGuestReservation;
+    }
+
+    public JButton getRemoveHotelButton(){
+        return removeHotelName;
+    }
+
+    public JButton getModifyDatePriceButton(){
+        return changeDatePrice;
+    }
+
+
+    // BOOK ROOM FUNCTIONS
+    public String getBookRoomHotelName(){
+        return tfBookHotelName.getText();
+    }
+
+    public String getBookGuestName(){
+        return tfBookGuestName.getText();
+    }
+
+    public String getCheckInDate(){
+        return tfCheckIn.getText();
+    }
+
+    public String getCheckOutDate(){
+        return tfCheckOut.getText();
+    }
+
+    public String getRoomToBook(){
+        return tfRoomToBook.getText();
+    }
+
+    public String getDiscountCode(){
+        return tfDiscountCode.getText();
+    }
+
+    public JButton getBookRoomButton(){
+        return reserveRoom;
+    }
+    
+
+
+
+
+
+
+
+
+
+    public void setActionListener(ActionListener listener){
+        addHotel.addActionListener(listener);
+        viewHotel.addActionListener(listener);
+        manageHotel.addActionListener(listener);
+        bookRoom.addActionListener(listener);
+        highLevelInfo.addActionListener(listener);
+        lowLevelInfo.addActionListener(listener);
+        availableRooms.addActionListener(listener);
+        selectRoom.addActionListener(listener);
+        selectReservation.addActionListener(listener);
+        changeHotelName.addActionListener(listener);
+        addRoom.addActionListener(listener);
+        removeRoom.addActionListener(listener);
+        updateBasePrice.addActionListener(listener);
+        removeReservation.addActionListener(listener);
+        removeHotel.addActionListener(listener);
+        modifyDatePrice.addActionListener(listener);
+        createHotel.addActionListener(listener);
+    }
+
+
 }
