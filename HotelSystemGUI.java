@@ -30,6 +30,7 @@ public class HotelSystemGUI extends JFrame {
     private JButton removeHotel;
     private JButton modifyDatePrice;
 
+    private JButton changeHotel;
     private JButton standardRoom;
     private JButton deluxeRoom;
     private JButton executiveRoom;
@@ -52,9 +53,13 @@ public class HotelSystemGUI extends JFrame {
     private JTextField tfCheckOut;
     private JTextField tfPriceModifier;
     private JTextField tfViewRoomSelect;
+    private JTextField tfManageHotelName;
+    private JTextField tfChangeHotelName;
+    private JTextField tfAddRoomName;
 
     private JTextArea taAvailability;
     private JTextArea taRoomInfo;
+    private JTextArea taReservationInfo;
 
 
     HotelSystemGUI(){
@@ -129,7 +134,10 @@ public class HotelSystemGUI extends JFrame {
         removeHotel = new JButton("Remove Hotel");
         modifyDatePrice = new JButton("Modify Date Price");
 
-        //changeHotel button
+        // change hotel name button
+        changeHotel = new JButton("Change Hotel Name");
+
+        //add room button
         standardRoom = new JButton("Add Standard Room");
         deluxeRoom = new JButton("Add Deluxe Room");
         executiveRoom = new JButton("Add Executive Room");
@@ -563,6 +571,22 @@ public class HotelSystemGUI extends JFrame {
         tfGuestName.setBounds(100, 100, 300, 35);
         panelCenter.add(tfGuestName);
 
+
+        viewSelectReservation.setBounds(100, 150, 300, 50);
+        panelCenter.add(viewSelectReservation);
+
+        taReservationInfo = new JTextArea();
+        taReservationInfo .setEditable(false);
+        taReservationInfo .setLineWrap(true);
+        taReservationInfo .setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(taReservationInfo);
+        scrollPane.setBounds(100, 250, 300, 200);
+
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panelCenter.add(scrollPane);
+
         selectedReservationFrame.add(panelCenter, BorderLayout.CENTER);
 
 
@@ -624,9 +648,9 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(140, 10, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfHotelName = new JTextField(20);
-        tfHotelName.setBounds(100, 45, 300, 35);
-        panelCenter.add(tfHotelName);
+        tfManageHotelName = new JTextField(20);
+        tfManageHotelName.setBounds(100, 45, 300, 35);
+        panelCenter.add(tfManageHotelName);
 
 
         changeHotelName.setBounds(100, 100, 300, 50);
@@ -702,12 +726,12 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(150, 50, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfHotelName = new JTextField(20);
-        tfHotelName.setBounds(100, 100, 300, 35);
-        panelCenter.add(tfHotelName);
+        tfChangeHotelName = new JTextField(20);
+        tfChangeHotelName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfChangeHotelName);
 
-        changeHotelName.setBounds(100, 200, 300, 50);
-        panelCenter.add(changeHotelName);
+        changeHotel.setBounds(100, 200, 300, 50);
+        panelCenter.add(changeHotel);
 
 
 
@@ -759,9 +783,9 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(150, 50, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfRoomName = new JTextField(20);
-        tfRoomName.setBounds(100, 100, 300, 35);
-        panelCenter.add(tfRoomName);
+        tfAddRoomName = new JTextField(20);
+        tfAddRoomName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfAddRoomName);
 
 
         standardRoom.setBounds(100, 200, 300, 50);
@@ -1230,8 +1254,17 @@ public class HotelSystemGUI extends JFrame {
         taRoomInfo.setVisible(true);
     }
 
+    public void displaySelectedReservation(String selectedReservation){
+        taReservationInfo.setText(selectedReservation);
+        taReservationInfo.setVisible(true);
+    }
+
     public String getSelectRoomName(){
         return tfViewRoomSelect.getText();
+    }
+
+    public String getSelectReservationName(){
+        return tfGuestName.getText();
     }
 
     public int getRoomCount() {
@@ -1281,10 +1314,51 @@ public class HotelSystemGUI extends JFrame {
         return viewSelectRoom;
     }
 
+    public JButton getViewSelectReservation(){
+        return viewSelectReservation;
+    }
 
 
+    //MANAGE HOTEL FUNCTIONS
+
+    public String getManageHotelName(){
+        return tfManageHotelName.getText();
+    }
+
+    public String getChangeHotelName(){
+        return tfChangeHotelName.getText();
+    }
 
 
+    public JButton getChangeHotelNameButton(){
+        return changeHotel;
+    }
+
+    public JButton getAddRoomButton(){
+        return addRoom;
+    }
+    
+    public JButton getStandardRoomButton(){
+        return standardRoom;
+    }
+    
+    public JButton getDeluxeRoomButton(){
+        return deluxeRoom;
+    }
+    
+    public JButton getExecutiveRoomButton(){
+        return deluxeRoom;
+    }
+    
+    public JButton getRemoveRoomButton(){
+        return removeRoom;
+    }
+
+
+    
+    
+    
+    
 
 
     private boolean isNumeric(String str) {
