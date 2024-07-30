@@ -79,7 +79,7 @@ public class Hotel {
      */
     public boolean hotelExists(String hotelName, ArrayList<Hotel> hotelList) {
         for (Hotel h : hotelList) {
-            if (h.getHotelName().equalsIgnoreCase(hotelName)) {
+            if (h.getHotelName().equals(hotelName)) {
                 return true;
             }
         }
@@ -111,7 +111,7 @@ public class Hotel {
     }
 
     /**
-     * Adds a new room to the hotel.
+     * Adds a new standard room to a hotel
      * @param roomName the name of the new room
      */
     public void addStandardRoom(String roomName) {
@@ -119,11 +119,19 @@ public class Hotel {
         this.roomCount++;
     }
 
+    /**
+     * Adds a new deluxe room to a hotel
+     * @param roomName
+     */
     public void addDeluxeRoom(String roomName){
         roomList.add(new Deluxe(roomName, 1299f));
         this.roomCount++;
     }
 
+    /**
+     * Adds a new executive room to a hotel
+     * @param roomName
+     */
     public void addExecutiveRoom(String roomName){
         roomList.add(new Executive(roomName, 1299f));
         this.roomCount++;
@@ -230,9 +238,6 @@ public class Hotel {
                 if (!(checkOutDate <= res.getCheckInDate() || checkInDate >= res.getCheckOutDate())) {
                     return false; // Dates overlap
                 }
-            } else if (res.getGuestName().equals(guestName)) {
-                System.out.println("Guest has already booked");
-                return false;
             }
         }
 
@@ -253,14 +258,6 @@ public class Hotel {
         return false;
     }
 
-    /**
-     * Prints the names of all rooms in the hotel.
-     */
-    public void printRooms() {
-        for (Room r : roomList) {
-            System.out.println(r.getRoomName());
-        }
-    }
 
     /**
      * Estimates and prints the total earnings for the month based on reservations.
@@ -339,38 +336,54 @@ public class Hotel {
      * Prints the reservation details of a specific guest by name.
      * @param guestName the name of the guest
      */
-    public void printReservationDetails(String guestName) {
+    public String printReservationDetails(String guestName) {
+        StringBuilder output = new StringBuilder();
+
         boolean reservationFound = false;
 
         for (Reservation r : reservations) {
             if (r.getGuestName().equalsIgnoreCase(guestName)) {
-                System.out.println("=======================");
-                System.out.println("Guest Name: " + r.getGuestName());
-                System.out.println("Room Name: " + r.getRoom().getRoomName());
-                System.out.println("Check-In Date: " + r.getCheckInDate());
-                System.out.println("Check-Out Date: " + r.getCheckOutDate());
-                System.out.println("Total Booking Price: " + r.getTotalPrice());
-                System.out.println("Price Per Night: " + r.getRoom().getPrice());
-                System.out.println("=======================");
+                output.append("=======================\n");
+                output.append("Guest Name: ").append(r.getGuestName()).append("\n");
+                output.append("Room Name: ").append(r.getRoom().getRoomName()).append("\n");
+                output.append("Check-In Date: ").append(r.getCheckInDate()).append("\n");
+                output.append("Check-Out Date: ").append(r.getCheckOutDate()).append("\n");
+                output.append("Total Booking Price: ").append(r.getTotalPrice()).append("\n");
+                output.append("Price Per Night: ").append(r.getRoom().getPrice()).append("\n");
+                output.append("=======================\n");
                 reservationFound = true;
                 break;
             }
         }
 
         if (!reservationFound) {
-            System.out.println("Reservation Not Found");
+            output.append("Reservation Not Found.");
+            return output.toString();
         }
+
+        return output.toString();
     }
 
 
-
-
+    /**
+     * Sets the price modifier for a specific day.
+     *
+     * @param day the day of the month (1-31)
+     * @param modifier the price modifier to set for the specified day
+     */
     public void setDatePriceModifier(int day, double modifier){
         if(day >= 1 && day <= 31){
             datePriceModifier.set(day-1, modifier);
         }
     }
 
+    /**
+     * Gets the price for a specific day for a given room.
+     *
+     * @param day the day of the month (1-31)
+     * @param room the room for which the price is to be calculated
+     * @return the price for the specified day and room
+     */
     public double getPriceForDate(int day, Room room){
         if(day >= 1 && day <= 31){
             return datePriceModifier.get(day - 1) * room.getPrice();
@@ -378,6 +391,11 @@ public class Hotel {
         return room.getPrice();
     }
 
+    /**
+     * Updates the total price for reservations affected by a price modifier on a specific day.
+     *
+     * @param day the day for which reservations need to be updated
+     */
     public void updateAffectedReservation(int day){
         for(Reservation reservation: reservations){
             if(reservation.getCheckInDate() <= day && reservation.getCheckOutDate() > day){
@@ -386,6 +404,11 @@ public class Hotel {
         }
     }
 
+    /**
+     * Gets the list of price modifiers for each day of the month.
+     *
+     * @return an ArrayList of price modifiers for each day of the month
+     */
     public ArrayList<Double> getDatePriceModifier(){
         return datePriceModifier;
     }
