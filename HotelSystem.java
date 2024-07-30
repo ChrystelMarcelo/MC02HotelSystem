@@ -19,25 +19,64 @@ public class HotelSystem {
     /**
      * Method that creates a hotel
      */
-    public void createHotel(String hotelName, int roomCount) {
-        boolean hotelExist = false;
-        for (Hotel h : hotelList) {
-            if (h.hotelFound(hotelName)) {
-                hotelExist = true;
-            }
-        }
+    public void createHotel() {
+        boolean hotelExit = false;
+        do {
 
-        if (hotelExist) {
-            System.out.println("Hotel already exists! Please input another hotel name: ");
-        } else {
-            if (roomCount < 1 || roomCount > 50) {
-                System.out.println("Enter number of rooms from 1 - 50 only. ");
-            } else {
-                Hotel hotel = new Hotel(hotelName, roomCount);
-                hotelList.add(hotel);
-                System.out.println(hotelName + " hotel successfully added in the system");
+            System.out.println("=======================");
+            System.out.print("Enter hotel name (enter 'exit' to back):");
+            String hotelNameInput = Scanner.nextLine();
+            System.out.println("=======================");
+
+            if (hotelNameInput.equals("exit")) {
+                hotelExit = true;
+                continue;
             }
-        }
+
+            boolean hotelExist = false;
+            for (Hotel h : hotelList) {
+                if (h.hotelFound(hotelNameInput)) {
+                    hotelExist = true;
+                }
+            }
+
+            int roomCount;
+
+            if (hotelExist)
+                System.out.println("Hotel already exists! Please input another hotel name: ");
+            else {
+                System.out.println("=======================");
+                System.out.print("Enter number of rooms (1 - 50): (enter 'exit' to back):");
+
+                if (Scanner.hasNextInt()) {
+                    roomCount = Scanner.nextInt();
+                    Scanner.nextLine();
+
+                    if ((roomCount < 1) || (roomCount > 50)) {
+                        System.out.println("Enter number of rooms from 1 - 50 only. ");
+                        continue;
+                    }
+                } else {
+                    String roomScanInput = Scanner.next();
+                    if (roomScanInput.equals("exit")) {
+                        hotelExit = true;
+                        continue;
+                    } else {
+                        System.out.println("Invalid Input Please Try Again.");
+                        continue;
+                    }
+
+                }
+                System.out.println("=======================");
+
+                Hotel hotel = new Hotel(hotelNameInput, roomCount);
+                hotelList.add(hotel);
+                System.out.println(hotelNameInput + " hotel successfully added in the system");
+
+            }
+
+
+        } while (!hotelExit);
     }
 
 
@@ -106,13 +145,15 @@ public class HotelSystem {
                                     case 2:
                                         System.out.println("Enter Room Name to View (e.g. Room 1):  ");
                                         String roomView = Scanner.nextLine();
-                                        h.printRoomDetails(roomView);
+                                        String printRoom = h.printRoomDetails(roomView);
+                                        System.out.println(printRoom);
                                         break;
 
                                     case 3:
                                         System.out.println("Enter guest name under reservation made:  ");
                                         String reservationSelect = Scanner.nextLine();
-                                        h.printReservationDetails(reservationSelect);
+                                        String printReservation = h.printReservationDetails(reservationSelect);
+                                        System.out.println(printReservation);
                                         break;
 
                                     default:
