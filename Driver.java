@@ -11,7 +11,7 @@ public class Driver {
         HotelSystem hrs = new HotelSystem();
         Controller controller = new Controller(GUI, hrs);
 
-        /*
+
         Scanner menuChoice = new Scanner(System.in);
 
         int exit = 0;
@@ -66,9 +66,7 @@ public class Driver {
 
         }
 
-         */
-    }
-}
 
+    }
 
 
