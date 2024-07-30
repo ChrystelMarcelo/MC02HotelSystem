@@ -1,6 +1,6 @@
 public class Standard extends Room {
     /**
-     * Constructs a Room object with a given room name
+     * Constructs a Standard Room object with a given room name
      *
      * @param roomName
      */
