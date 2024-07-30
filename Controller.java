@@ -2,11 +2,22 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The Controller class implements the ActionListener interface to handle
+ * user interactions and manage the connection between the view (HotelSystemGUI)
+ * and the model (HotelSystem).
+ */
 public class Controller implements ActionListener{
     private HotelSystemGUI view;
     private HotelSystem model;
 
 
+    /**
+     * Constructs a new Controller object.
+     *
+     * @param gui the HotelSystemGUI object that serves as the view
+     * @param hotelSystem the HotelSystem object that serves as the model
+     */
     public Controller(HotelSystemGUI gui, HotelSystem hotelSystem){
         this.view = gui;
         this.model = hotelSystem;
@@ -18,37 +29,62 @@ public class Controller implements ActionListener{
         gui.setActionListener(this);
     }
 
+
     //NEW WINDOWS
+    /**
+     * Opens a new window to create a hotel.
+     */
     private void createHotelView(){
         view.createHotelWindow("Add Hotel");
     }
 
+    /**
+     * Opens a new window to view a hotel.
+     */
     private void viewHotelView(){
         view.viewHotelWindow("View Hotel");
         //model.viewHotel();
     }
 
+    /**
+     * Opens a new window to manage a hotel.
+     */
     private void manageHotelView(){
         view.manageHotelView("Manage Hotel");
     }
 
+    /**
+     * Opens a new window to book a room
+     */
     private void bookRoomView(){
 
         view.bookRoomView("Book Room");
     }
 
+    /**
+     *  Opens a new window to view available rooms
+     */
     private void availableRoomView(){
         view.viewAvailableRooms("Available Rooms");
     }
 
+    /**
+     * Opens a new window to view room information
+     */
     private void selectRoomView(){
         view.viewSelectRoom("Room Information");
     }
 
+    /**
+     * Opens a new window to view reservation details
+     */
     private void selectReservationView(){
         view.viewSelectReservation("Reservation Information");
     }
 
+    /**
+     * Opens a new window to change hotel name
+     */
     private void changeHotelNameView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -67,6 +103,9 @@ public class Controller implements ActionListener{
         view.changeHotelNameView("Change Hotel Name");
     }
 
+    /**
+     * Opens a new window to add a room
+     */
     private void addRoomView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -85,6 +124,9 @@ public class Controller implements ActionListener{
         view.addRoomView("Add Room");
     }
 
+    /**
+     * Opens a new window to remove a room
+     */
     private void removeRoomView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -103,6 +145,9 @@ public class Controller implements ActionListener{
         view.removeRoomView("Remove Room");
     }
 
+    /**
+     * Opens a new window to update base price of rooms
+     */
     private void updateRoomBasePriceView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -121,6 +166,9 @@ public class Controller implements ActionListener{
         view.updateBasePriceView("Update Room Base Price");
     }
 
+    /**
+     * Opens a new window to remove a reservation
+     */
     private void removeReservationView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -139,6 +187,9 @@ public class Controller implements ActionListener{
         view.removeReservationView("Remove Reservation");
     }
 
+    /**
+     * Opens a new window to remove a hotel
+     */
     private void removeHotelView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -157,6 +208,9 @@ public class Controller implements ActionListener{
         view.removeHotelView("Remove Hotel");
     }
 
+    /**
+     * Opens a new window to modify date price
+     */
     private void modifyDatePriceView(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -179,6 +233,9 @@ public class Controller implements ActionListener{
 
     //CREATE HOTEL CONTROLLERS
 
+    /**
+     * Initializes the listener for the "Create Hotel" button.
+     */
     private void initializeCreateHotelListener(){
         view.getCreateHotelButton().addActionListener(new ActionListener() {
             @Override
@@ -188,6 +245,11 @@ public class Controller implements ActionListener{
         });
     }
 
+    /**
+     * Handles the creation of a new hotel.
+     * Checks if the hotel already exists and ensures the room count is within the valid range.
+     * If valid, adds the hotel to the system and displays a success message.
+     */
     private void handleCreateHotel(){
         String hotelName = view.getHotelName();
         int roomCount = view.getRoomCount();
@@ -201,8 +263,12 @@ public class Controller implements ActionListener{
 
         if(hotelExist){
             JOptionPane.showMessageDialog(view, "Hotel Already Exists!");
+            System.out.println("Hotel Already Exists!");
+            return;
         }else if((roomCount < 1) || (roomCount > 50)){
             JOptionPane.showMessageDialog(view, "Enter number of rooms from 1 - 50 only. ");
+            System.out.println("Enter number of rooms from 1 - 50 only. ");
+            return;
             }
 
         Hotel hotel = new Hotel(hotelName, roomCount);
@@ -215,6 +281,15 @@ public class Controller implements ActionListener{
 
     //VIEW HOTEL CONTROLLERS
 
+    /**
+     * Initializes the listeners for various hotel view buttons.
+     * This includes:
+     * - High level information button
+     * - Low level information button
+     * - View available rooms button
+     * - Select room button
+     * - Select reservation button
+     */
     private void initializeViewHotelListeners() {
         view.getHighLevelInfoButton().addActionListener(new ActionListener() {
             @Override
@@ -233,25 +308,32 @@ public class Controller implements ActionListener{
         view.getViewAvailableRooms().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleAvailableRooms(e);
+                handleAvailableRooms();
             }
         });
 
         view.getViewSelectRoom().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSelectRoom(e);
+                handleSelectRoom();
             }
         });
 
         view.getViewSelectReservation().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSelectReservation(e);
+                handleSelectReservation();
             }
         });
     }
 
+    /**
+     * Handles the viewing of hotel information based on the specified level.
+     *
+     * @param isHighLevel A boolean flag to determine the level of information to display.
+     *                    If true, displays high-level information.
+     *                    If false, displays low-level information.
+     */
     private void handleViewHotel(boolean isHighLevel){
         String selectedHotelName = view.getViewHotelName();
         Hotel selectedHotel = null;
@@ -275,17 +357,33 @@ public class Controller implements ActionListener{
         }
     }
 
+    /**
+     * Displays low-level information about the specified hotel.
+     *
+     * @param hotel The hotel for which to display low-level information.
+     */
     private void displayLowLevelInfo(Hotel hotel){
         view.lowInfoView("Low Level Information");
     }
 
+    /**
+     * Displays high-level information about the specified hotel.
+     *
+     * @param hotel The hotel for which to display high-level information.
+     */
     private void displayHighLevelInfo(Hotel hotel){
         view.highInfoView("High Level Information", hotel.getHotelName(), hotel.getRoomCount());
     }
 
-    private void handleAvailableRooms(ActionEvent e){
+    /**
+     * Handles the viewing of available rooms in the selected hotel for a given date.
+     * Validates the date and displays the availability of rooms.
+     */
+    private void handleAvailableRooms(){
         String selectedHotelName = view.getViewHotelName();
+        int date = view.getTfDate();
         Hotel selectedHotel = null;
+
         for (Hotel hotel : model.getHotelList()) {
             if (hotel.getHotelName().equals(selectedHotelName)) {
                 selectedHotel = hotel;
@@ -295,19 +393,30 @@ public class Controller implements ActionListener{
 
         if (selectedHotel == null) {
             JOptionPane.showMessageDialog(view, "Hotel not found.");
+            System.out.println("Hotel not found.");
+            return;
+        }
+
+        if(date < 1 || date > 31){
+            JOptionPane.showMessageDialog(view, "Invalid Date");
+            System.out.println("Invalid Date");
             return;
         }
 
         try {
-            int date = view.getTfDate();
             String availability = selectedHotel.displayAvailableAndBookedRooms(date);
             view.displayAvailability(availability);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(view, "Invalid date format. Please enter a valid date.");
+            System.out.println("Invalid Date Format.");
         }
     }
 
-    private void handleSelectRoom(ActionEvent e){
+    /**
+     * Handles the selection of a room in the specified hotel.
+     * Validates the hotel and room names and displays room details if found.
+     */
+    private void handleSelectRoom(){
         String selectedHotelName = view.getViewHotelName();
         String roomName = view.getSelectRoomName();
         Hotel selectedHotel = null;
@@ -340,7 +449,11 @@ public class Controller implements ActionListener{
         }
     }
 
-    private void handleSelectReservation(ActionEvent e){
+    /**
+     * Handles the selection of a reservation in the specified guest name
+     * Validates the hotel and reservation name and displays reservation details
+     */
+    private void handleSelectReservation(){
         String selectedHotelName = view.getViewHotelName();
         Hotel selectedHotel = null;
         for (Hotel hotel : model.getHotelList()) {
@@ -367,6 +480,19 @@ public class Controller implements ActionListener{
 
     // MANAGE HOTEL CONTROLLERS
 
+    /**
+     * Initializes the listeners for various manage hotel buttons.
+     * This includes:
+     * - Change Hotel Name Button
+     * - Add Standard Room Button
+     * - Add Deluxe Room Button
+     * - Add Executive Room Button
+     * - Remove Room Button
+     * - Update Base Price Button
+     * - Remove Reservation Button
+     * - Remove Hotel Button
+     * - Modify Date Price Button
+     */
     private void initializeManageHotelListeners() {
         view.getChangeHotelNameButton().addActionListener(new ActionListener() {
             @Override
@@ -432,6 +558,9 @@ public class Controller implements ActionListener{
         });
     }
 
+    /**
+     * Handles the name changing of a hotel
+     */
     private void handleChangeHotelName(){
         String selectHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -457,9 +586,12 @@ public class Controller implements ActionListener{
 
     }
 
+    /**
+     * Handles the addition of standard hotel rooms
+     */
     private void handleAddStandardRoom(){
         String selectHotelName = view.getManageHotelName();
-        String newRoomName = view.getSelectRoomName();
+        String newRoomName = view.getAddRoomName();
         Hotel selectedHotel = null;
 
         for(Hotel hotel: model.getHotelList()){
@@ -482,15 +614,21 @@ public class Controller implements ActionListener{
             selectedHotel.addStandardRoom(newRoomName);
             JOptionPane.showMessageDialog(view,"Standard Room Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Standard Room Successfully Added");
+        }else{
+            JOptionPane.showMessageDialog(view,"Maximum Room Limit Reached", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Maximum Room Limit Reached");
         }
 
 
 
     }
 
+    /**
+     * Handles the addition of deluxe hotel rooms
+     */
     private void handleAddDeluxeRoom(){
         String selectHotelName = view.getManageHotelName();
-        String newRoomName = view.getSelectRoomName();
+        String newRoomName = view.getAddRoomName();
         Hotel selectedHotel = null;
 
         for(Hotel hotel: model.getHotelList()){
@@ -513,13 +651,19 @@ public class Controller implements ActionListener{
             selectedHotel.addDeluxeRoom(newRoomName);
             JOptionPane.showMessageDialog(view,"Deluxe Room Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Deluxe Room Successfully Added");
+        }else{
+            JOptionPane.showMessageDialog(view,"Maximum Room Limit Reached", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Maximum Room Limit Reached");
         }
 
     }
 
+    /**
+     * Handles the addition of executive hotel rooms
+     */
     private void handleAddExecutiveRoom(){
         String selectHotelName = view.getManageHotelName();
-        String newRoomName = view.getSelectRoomName();
+        String newRoomName = view.getAddRoomName();
         Hotel selectedHotel = null;
 
         for(Hotel hotel: model.getHotelList()){
@@ -541,10 +685,16 @@ public class Controller implements ActionListener{
             selectedHotel.addExecutiveRoom(newRoomName);
             JOptionPane.showMessageDialog(view,"Executive Room Added Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Executive Room Successfully Added");
+        }else{
+            JOptionPane.showMessageDialog(view,"Maximum Room Limit Reached", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Maximum Room Limit Reached");
         }
 
     }
 
+    /**
+     * Handles the removing of a selected room
+     */
     private void handleRemoveRoom(){
         String selectHotelName = view.getManageHotelName();
         String selectRemoveName = view.getRemoveRoomName();
@@ -567,6 +717,9 @@ public class Controller implements ActionListener{
 
     }
 
+    /**
+     * Handles the base price updating of rooms
+     */
     private void handleUpdateBasePrice(){
         String selectedHotelName = view.getManageHotelName();
 
@@ -593,6 +746,9 @@ public class Controller implements ActionListener{
         }
     }
 
+    /**
+     * Handles the removing of a selected reservation
+     */
     private void handleRemoveReservation(){
         String selectedHotelName = view.getManageHotelName();
         String guestName = view.getRemoveReservation();
@@ -617,6 +773,9 @@ public class Controller implements ActionListener{
         }
     }
 
+    /**
+     * Handles the removing of a selected hotel
+     */
     private void handleRemoveHotel(){
         String selectedHotelName = view.getManageHotelName();
         Hotel selectedHotel = null;
@@ -634,6 +793,9 @@ public class Controller implements ActionListener{
         }
     }
 
+    /**
+     * Handles the modifying the price of a selected date
+     */
     private void handleDatePriceModifier(){
         int i;
         String selectedHotelName = view.getManageHotelName();
@@ -662,6 +824,9 @@ public class Controller implements ActionListener{
 
     // BOOK ROOM CONTROLLERS
 
+    /**
+     * Initializes the listener for the book room button
+     */
     private void initializeBookRoomListener(){
         view.getBookRoomButton().addActionListener(new ActionListener() {
             @Override
@@ -671,6 +836,9 @@ public class Controller implements ActionListener{
         });
     }
 
+    /**
+     * Handles the reservation of a room
+     */
     private void handleBookRoom() {
         String selectedHotelName = view.getBookRoomHotelName();
         String guestName = view.getBookGuestName();
@@ -764,7 +932,12 @@ public class Controller implements ActionListener{
         }
     }
 
+
     // For Creating New Window
+    /**
+     * Checks the action command of the event and directs the flow to the appropriate view method
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Create Hotel")){
