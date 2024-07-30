@@ -1,12 +1,13 @@
-public class Standard extends Room {
+public class Deluxe extends Room{
     /**
      * Constructs a Room object with a given room name
      *
      * @param roomName
      */
-    Standard(String roomName, double roomPrice) {
-        super(roomName, roomPrice);
+    Deluxe(String roomName, double baseRate) {
+        super(roomName, baseRate);
     }
+
 
     /**
      * Gets the price of the room.
@@ -14,8 +15,9 @@ public class Standard extends Room {
      * @return the price of the room
      */
     @Override
-    public double getPrice() {
-        return getBaseRate();
+    public double getPrice(){
+        double percentMore = getBaseRate() * 0.2;
+        return getBaseRate() + percentMore;
     }
 
     /**
@@ -25,6 +27,6 @@ public class Standard extends Room {
      */
     @Override
     public String getRoomType(){
-        return "Standard";
+        return "Deluxe";
     }
 }
