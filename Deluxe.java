@@ -9,12 +9,22 @@ public class Deluxe extends Room{
     }
 
 
+    /**
+     * Gets the price of the room.
+     *
+     * @return the price of the room
+     */
     @Override
     public double getPrice(){
         double percentMore = getBaseRate() * 0.2;
         return getBaseRate() + percentMore;
     }
 
+    /**
+     * Gets the type of the room.
+     *
+     * @return the type of the room
+     */
     @Override
     public String getRoomType(){
         return "Deluxe";
