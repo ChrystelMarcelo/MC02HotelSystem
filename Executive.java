@@ -1,6 +1,6 @@
 public class Executive extends Room{
     /**
-     * Constructs a Room object with a given room name
+     * Constructs an Executive Room object with a given room name
      *
      * @param roomName
      */
