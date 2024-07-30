@@ -39,8 +39,18 @@ public abstract class Room {
     }
 
 
+    /**
+     * Gets the price of the room.
+     *
+     * @return the price of the room
+     */
     public abstract double getPrice();
 
+    /**
+     * Gets the type of the room.
+     *
+     * @return the type of the room
+     */
     public abstract String getRoomType();
 
     /**
