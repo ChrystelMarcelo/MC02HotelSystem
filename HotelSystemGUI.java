@@ -49,13 +49,24 @@ public class HotelSystemGUI extends JFrame {
     private JTextField tfDate;
     private JTextField tfRoomName;
     private JTextField tfGuestName;
-    private JTextField tfCheckIn;
-    private JTextField tfCheckOut;
     private JTextField tfPriceModifier;
     private JTextField tfViewRoomSelect;
     private JTextField tfManageHotelName;
     private JTextField tfChangeHotelName;
     private JTextField tfAddRoomName;
+    private JTextField tfRemoveRoomName;
+    private JTextField tfUpdateBasePrice;
+    private JTextField tfRemoveReservation;
+    private JTextField tfRemoveHotel;
+    private JTextField tfModifyDatePrice;
+
+    private JTextField tfBookHotelName;
+    private JTextField tfBookGuestName;
+    private JTextField tfCheckIn;
+    private JTextField tfCheckOut;
+    private JTextField tfRoomToBook;
+    private JTextField tfDiscountCode;
+
 
     private JTextArea taAvailability;
     private JTextArea taRoomInfo;
@@ -156,6 +167,9 @@ public class HotelSystemGUI extends JFrame {
 
         //modifyDatePrice
         changeDatePrice = new JButton("Modify Price");
+
+        //Book Room
+        reserveRoom = new JButton("Book Room");
 
         this.add(panelCenter, BorderLayout.CENTER);
     }
@@ -848,9 +862,9 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(130, 50, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfRoomName = new JTextField(20);
-        tfRoomName.setBounds(100, 100, 300, 35);
-        panelCenter.add(tfRoomName);
+        tfRemoveRoomName = new JTextField(20);
+        tfRemoveRoomName.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfRemoveRoomName);
 
         removeNameRoom.setBounds(100, 200, 300, 50);
         panelCenter.add(removeNameRoom);
@@ -902,9 +916,9 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(150, 50, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfRoomName = new JTextField(20);
-        tfRoomName.setBounds(100, 100, 300, 35);
-        panelCenter.add(tfRoomName);
+        tfUpdateBasePrice = new JTextField(20);
+        tfUpdateBasePrice.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfUpdateBasePrice);
 
         updateBasePriceRoom.setBounds(100, 200, 300, 50);
         panelCenter.add(updateBasePriceRoom);
@@ -956,9 +970,9 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(105, 50, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfRoomName = new JTextField(20);
-        tfRoomName.setBounds(100, 100, 300, 35);
-        panelCenter.add(tfRoomName);
+        tfRemoveReservation = new JTextField(20);
+        tfRemoveReservation.setBounds(100, 100, 300, 35);
+        panelCenter.add(tfRemoveReservation);
 
         removeGuestReservation.setBounds(100, 200, 300, 50);
         panelCenter.add(removeGuestReservation);
@@ -1148,9 +1162,9 @@ public class HotelSystemGUI extends JFrame {
         lblHotelName.setBounds(150, 5, 300, 50);
         panelCenter.add(lblHotelName);
 
-        tfHotelName = new JTextField(20);
-        tfHotelName.setBounds(100, 40, 300, 35);
-        panelCenter.add(tfHotelName);
+        tfBookHotelName = new JTextField(20);
+        tfBookHotelName.setBounds(100, 40, 300, 35);
+        panelCenter.add(tfBookHotelName);
 
         JLabel lblGuestName = new JLabel("Enter Guest Name: ");
         lblGuestName.setForeground(Color.black);
@@ -1158,9 +1172,9 @@ public class HotelSystemGUI extends JFrame {
         lblGuestName.setBounds(175, 70, 300, 50);
         panelCenter.add(lblGuestName);
 
-        tfGuestName = new JTextField(20);
-        tfGuestName.setBounds(100, 105, 300, 35);
-        panelCenter.add(tfGuestName);
+        tfBookGuestName = new JTextField(20);
+        tfBookGuestName.setBounds(100, 105, 300, 35);
+        panelCenter.add(tfBookGuestName);
 
 
         JLabel lblCheckIn = new JLabel("Check-In Date: ");
@@ -1190,9 +1204,9 @@ public class HotelSystemGUI extends JFrame {
         lblroomBook.setBounds(190, 280, 300, 50);
         panelCenter.add(lblroomBook);
 
-        tfCheckOut = new JTextField(20);
-        tfCheckOut.setBounds(100, 315, 300, 35);
-        panelCenter.add(tfCheckOut);
+        tfRoomToBook = new JTextField(20);
+        tfRoomToBook.setBounds(100, 315, 300, 35);
+        panelCenter.add(tfRoomToBook);
 
         JLabel lblDiscountCode = new JLabel("Discount Code ");
         lblDiscountCode.setForeground(Color.black);
@@ -1200,12 +1214,11 @@ public class HotelSystemGUI extends JFrame {
         lblDiscountCode.setBounds(190, 350, 300, 50);
         panelCenter.add(lblDiscountCode);
 
-        tfCheckOut = new JTextField(20);
-        tfCheckOut.setBounds(100, 385, 300, 35);
-        panelCenter.add(tfCheckOut);
+        tfDiscountCode = new JTextField(20);
+        tfDiscountCode.setBounds(100, 385, 300, 35);
+        panelCenter.add(tfDiscountCode);
 
 
-        reserveRoom = new JButton("Book Room");
         reserveRoom.setBounds(100, 440, 300, 50);
         panelCenter.add(reserveRoom);
 
@@ -1329,6 +1342,15 @@ public class HotelSystemGUI extends JFrame {
         return tfChangeHotelName.getText();
     }
 
+    public String getRemoveRoomName(){
+        return tfRemoveRoomName.getText();
+    }
+
+
+    public double getUpdateBasePrice(){
+        return Double.parseDouble(tfUpdateBasePrice.getText());
+    }
+
 
     public JButton getChangeHotelNameButton(){
         return changeHotel;
@@ -1337,29 +1359,60 @@ public class HotelSystemGUI extends JFrame {
     public JButton getAddRoomButton(){
         return addRoom;
     }
-    
+
     public JButton getStandardRoomButton(){
         return standardRoom;
     }
-    
+
     public JButton getDeluxeRoomButton(){
         return deluxeRoom;
     }
-    
+
     public JButton getExecutiveRoomButton(){
-        return deluxeRoom;
+        return executiveRoom;
     }
-    
+
     public JButton getRemoveRoomButton(){
-        return removeRoom;
+        return removeNameRoom;
+    }
+
+    public JButton getUpdateBasePriceButton(){
+        return updateBasePriceRoom;
     }
 
 
-    
-    
-    
-    
 
+
+
+    // BOOK ROOM FUNCTIONS
+
+    public String getBookRoomHotelName(){
+        return tfBookHotelName.getText();
+    }
+
+    public String getBookGuestName(){
+        return tfBookGuestName.getText();
+    }
+
+    public int getCheckInDate(){
+        return Integer.parseInt(tfCheckIn.getText());
+    }
+
+    public int getCheckOutDate(){
+        return Integer.parseInt(tfCheckOut.getText());
+    }
+
+    public String getRoomToBook(){
+        return tfRoomToBook.getText();
+    }
+
+    public String getDiscountCode(){
+        return tfDiscountCode.getText();
+    }
+
+    public JButton getBookRoomButton(){
+        return reserveRoom;
+    }
 
     private boolean isNumeric(String str) {
         if (str == null || str.isEmpty()) {
