@@ -1,10 +1,9 @@
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * 
+ * Represents the graphical user interface (GUI) for the hotel management system.
  */
 public class HotelSystemGUI extends JFrame {
 
@@ -50,7 +49,6 @@ public class HotelSystemGUI extends JFrame {
     private JTextField tfViewHotelName;
     private JTextField tfRoomCount;
     private JTextField tfDate;
-    private JTextField tfRoomName;
     private JTextField tfGuestName;
     private JTextField tfPriceModifier;
     private JTextField tfViewRoomSelect;
@@ -60,10 +58,7 @@ public class HotelSystemGUI extends JFrame {
     private JTextField tfRemoveRoomName;
     private JTextField tfUpdateBasePrice;
     private JTextField tfRemoveReservation;
-    private JTextField tfRemoveHotel;
-    private JTextField tfModifyDatePrice;
     private JTextField tfDateForModifier;
-
     private JTextField tfBookHotelName;
     private JTextField tfBookGuestName;
     private JTextField tfCheckIn;
@@ -78,7 +73,7 @@ public class HotelSystemGUI extends JFrame {
 
 
     /**
-     * 
+     * Constructs a new HotelSystemGUI object
      */
     HotelSystemGUI(){
         super("Hotel System");
@@ -86,7 +81,7 @@ public class HotelSystemGUI extends JFrame {
     }
 
     /**
-     * 
+     * Initializes and configures the main menu GUI for the hotel management system.
      */
     public void HotelMenuGUI(){
         setLayout(new BorderLayout());
@@ -101,7 +96,7 @@ public class HotelSystemGUI extends JFrame {
 
 
     /**
-     * 
+     * Initializes and sets up the components of the HotelSystemGUI.
      */
     private void init(){
         //NORTH PANEL
@@ -189,7 +184,8 @@ public class HotelSystemGUI extends JFrame {
 
 
     /**
-     * @param title 
+     * Creates and displays a new window for creating a hotel
+     * @param title the title to be displayed on the hotel creation window.
      */
     public void createHotelWindow(String title){
         JFrame createHotelFrame = new JFrame(title);
@@ -207,7 +203,8 @@ public class HotelSystemGUI extends JFrame {
 
 
     /**
-     * @param frame 
+     * Initializes and sets up the components for the hotel creation window.
+     * @param frame the JFrame to be initialized with components for hotel creation.
      */
     private void inCreateHotel(JFrame frame){
         //NORTH PANEL
@@ -267,7 +264,10 @@ public class HotelSystemGUI extends JFrame {
         frame.add(panelSouth, BorderLayout.SOUTH);
     }
 
-
+    /**
+     * Creates and displays a new window for viewing a hotel
+     * @param title the title to be displayed on the hotel viewing window.
+     */
     public void viewHotelWindow(String title){
         JFrame viewHotelFrame = new JFrame(title);
         viewHotelFrame.setSize(500, 600);
@@ -280,6 +280,10 @@ public class HotelSystemGUI extends JFrame {
         viewHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Initializes and sets up the components for the hotel viewing window.
+     * @param frame the JFrame to be initialized with components for hotel viewing.
+     */
     private void inViewHotel(JFrame frame){
         // NORTH PANEL
         JPanel panelNorth = new JPanel();
@@ -335,6 +339,10 @@ public class HotelSystemGUI extends JFrame {
 
     }
 
+    /**
+     * Creates and displays a new window for displaying hotel high information
+     * @param title the title to be displayed on the hotel high info window.
+     */
     public void highInfoView(String title, String hotelName, int roomCount){
         JFrame highInfoFrame = new JFrame(title);
         highInfoFrame.setSize(500, 600);
@@ -383,6 +391,10 @@ public class HotelSystemGUI extends JFrame {
         highInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for displaying hotel low information
+     * @param title the title to be displayed on the hotel low info window.
+     */
     public void lowInfoView(String title){
         JFrame lowInfoFrame = new JFrame(title);
         lowInfoFrame.setSize(500, 600);
@@ -395,6 +407,10 @@ public class HotelSystemGUI extends JFrame {
         lowInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Initializes and sets up the components for the low info window.
+     * @param frame the JFrame to be initialized with components for low info viewing.
+     */
     private void inLowInfo(JFrame frame){
         // NORTH PANEL
         JPanel panelNorth = new JPanel();
@@ -437,6 +453,10 @@ public class HotelSystemGUI extends JFrame {
         frame.add(panelSouth, BorderLayout.SOUTH);
     }
 
+    /**
+     * Creates and displays a new window for displaying available rooms information
+     * @param title the title to be displayed on the hotel available rooms window.
+     */
     public void viewAvailableRooms(String title){
         JFrame availableRoomsFrame = new JFrame(title);
         availableRoomsFrame.setSize(500, 600);
@@ -504,6 +524,10 @@ public class HotelSystemGUI extends JFrame {
         availableRoomsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for displaying room information
+     * @param title the title to be displayed on the hotel room information window.
+     */
     public void viewSelectRoom(String title){
         JFrame selectedRoomFrame = new JFrame(title);
         selectedRoomFrame.setSize(500, 600);
@@ -572,6 +596,10 @@ public class HotelSystemGUI extends JFrame {
         selectedRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for displaying reservation details
+     * @param title the title to be displayed on the hotel reservation details window.
+     */
     public void viewSelectReservation(String title){
         JFrame selectedReservationFrame = new JFrame(title);
         selectedReservationFrame.setSize(500, 600);
@@ -642,7 +670,10 @@ public class HotelSystemGUI extends JFrame {
 
 
 
-
+    /**
+     * Creates and displays a new window for managing a hotel
+     * @param title the title to be displayed on the hotel managing window.
+     */
     public void manageHotelView(String title){
         JFrame manageHotelFrame = new JFrame(title);
         manageHotelFrame.setSize(500, 600);
@@ -657,6 +688,10 @@ public class HotelSystemGUI extends JFrame {
         manageHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Initializes and sets up the components for the hotel managing window.
+     * @param frame the JFrame to be initialized with components for hotel managing.
+     */
     private void inManageHotel(JFrame frame){
         // NORTH PANEL
         JPanel panelNorth = new JPanel();
@@ -730,7 +765,10 @@ public class HotelSystemGUI extends JFrame {
 
     }
 
-
+    /**
+     * Creates and displays a new window for changing hotel name
+     * @param title the title to be displayed on the hotel change name window
+     */
     public void changeHotelNameView(String title){
         JFrame changeHotelNameFrame = new JFrame(title);
         changeHotelNameFrame.setSize(500, 600);
@@ -787,6 +825,10 @@ public class HotelSystemGUI extends JFrame {
         changeHotelNameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for adding a room
+     * @param title the title to be displayed on the hotel add room window.
+     */
     public void addRoomView(String title){
 
         JFrame addRoomViewFrame = new JFrame(title);
@@ -852,6 +894,10 @@ public class HotelSystemGUI extends JFrame {
         addRoomViewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for removing a room
+     * @param title the title to be displayed on the hotel remove room window.
+     */
     public void removeRoomView(String title){
         JFrame removeRoomFrame = new JFrame(title);
         removeRoomFrame.setSize(500, 600);
@@ -907,6 +953,10 @@ public class HotelSystemGUI extends JFrame {
         removeRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for updating the base price of rooms
+     * @param title the title to be displayed on the hotel update base price window.
+     */
     public void updateBasePriceView(String title){
         JFrame updateBasePriceFrame = new JFrame(title);
         updateBasePriceFrame.setSize(500, 600);
@@ -961,6 +1011,10 @@ public class HotelSystemGUI extends JFrame {
         updateBasePriceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for removing a reservation
+     * @param title the title to be displayed on the hotel remove reservation window
+     */
     public void removeReservationView(String title){
         JFrame removeReservationFrame = new JFrame(title);
         removeReservationFrame.setSize(500, 600);
@@ -1015,6 +1069,10 @@ public class HotelSystemGUI extends JFrame {
         removeReservationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for removing a hotel
+     * @param title the title to be displayed on the hotel remove hotel window
+     */
     public void removeHotelView(String title){
         JFrame removeHotelFrame = new JFrame(title);
         removeHotelFrame.setSize(500, 600);
@@ -1066,6 +1124,10 @@ public class HotelSystemGUI extends JFrame {
         removeHotelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Creates and displays a new window for modifying date price
+     * @param title the title to be displayed on the hotel modify date price window
+     */
     public void modifyDatePrice(String title){
         JFrame modifyDatePriceFrame = new JFrame(title);
         modifyDatePriceFrame.setSize(500, 600);
@@ -1130,7 +1192,11 @@ public class HotelSystemGUI extends JFrame {
         setResizable(false);
         modifyDatePriceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    
+
+    /**
+     * Creates and displays a new window for booking a reservation
+     * @param title the title to be displayed on the hotel book room window
+     */
     public void bookRoomView(String title){
         JFrame bookRoomFrame = new JFrame(title);
         bookRoomFrame.setSize(500, 600);
@@ -1145,6 +1211,10 @@ public class HotelSystemGUI extends JFrame {
         bookRoomFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
+    /**
+     * Initializes and sets up the components for the hotel book room window
+     * @param frame the JFrame to be initialized with components for hotel room booking.
+     */
     private void inBookRoom(JFrame frame){
         // NORTH PANEL
         JPanel panelNorth = new JPanel();
@@ -1246,187 +1316,338 @@ public class HotelSystemGUI extends JFrame {
         frame.add(panelNorth, BorderLayout.NORTH);
     }
 
-    
 
+    /**
+     * Returns the text input in the hotel name text field.
+     * @return String representing the hotel name
+     */
     //CREATE HOTEL FUNCTIONS
     public String getHotelName(){
         return tfHotelName.getText();
     }
 
+    /**
+     * Returns the text input in the room count text field.
+     * @return int representing the number of rooms
+     */
     public int getRoomCount() {
         return Integer.parseInt(tfRoomCount.getText());
     }
 
+    /**
+     * Returns the button for creating a hotel
+     * @return JButton for hotel creation
+     */
     public JButton getCreateHotelButton(){
         return createHotel;
     }
 
     //VIEW HOTEL FUNCTIONS
+    /**
+     * Returns the text input in the view hotel name text field
+     * @return String representing the hotel name for viewing
+     */
     public String getViewHotelName(){
         return tfViewHotelName.getText();
     }
 
+    /**
+     * Returns the text input in the date text field
+     * @return int representing the date to view
+     */
     public int getTfDate(){
         return Integer.parseInt(tfDate.getText());
     }
 
+
+    /**
+     * Updates and displays the room availability information in a text area.
+     * @param availability representing the room availability information to be displayed.
+     */
     public void displayAvailability(String availability) {
         taAvailability.setText(availability);
         taAvailability.setVisible(true);
     }
 
+    /**
+     * Updates and displays the room information in a text area
+     * @param selectedRoom representing the room information to be displayed.
+     */
     public void displaySelectedRoom(String selectedRoom){
         taRoomInfo.setText(selectedRoom);
         taRoomInfo.setVisible(true);
     }
 
+    /**
+     * Updates and displays the reservation details in a text area
+     * @param selectedReservation representing the reservation details to be displayed.
+     */
     public void displaySelectedReservation(String selectedReservation){
         taReservationInfo.setText(selectedReservation);
         taReservationInfo.setVisible(true);
     }
 
+
+    /**
+     * Returns the text input in the view room information
+     * @return String representing the room name for viewing
+     */
     public String getSelectRoomName(){
         return tfViewRoomSelect.getText();
     }
 
+    /**
+     * Returns the text input in the view reservation details
+     * @return String representing the reservation for viewing
+     */
     public String getSelectReservationName(){
         return tfGuestName.getText();
     }
 
+    /**
+     * Returns the button for viewing high level information
+     * @return JButton for high level information
+     */
     public JButton getHighLevelInfoButton(){
 
         return highLevelInfo;
     }
 
+    /**
+     * Returns the button for viewing low level information
+     * @return JButton for low level information
+     */
     public JButton getLowLevelInfoButton(){
 
         return lowLevelInfo;
     }
 
+    /**
+     * Returns the button for viewing available rooms
+     * @return JButton for viewing available rooms
+     */
     public JButton getViewAvailableRooms(){
 
         return viewAvailableRooms;
     }
 
+    /**
+     * Returns the button for viewing room information
+     * @return JButton for viewing room information
+     */
     public JButton getViewSelectRoom(){
         return viewSelectRoom;
     }
 
+    /**
+     * Returns the button for viewing reservation information
+     * @return JButton for viewing reservation details
+     */
     public JButton getViewSelectReservation(){
         return viewSelectReservation;
     }
 
 
     //MANAGE HOTEL FUNCTIONS
+    /**
+     * Returns the text input in the manage hotel name text field
+     * @return String representing the hotel name for managing
+     */
     public String getManageHotelName(){
         return tfManageHotelName.getText();
     }
 
+    /**
+     * Returns the text input in the change hotel name text field
+     * @return String representing the new hotel name for changing
+     */
     public String getChangeHotelName(){
         return tfChangeHotelName.getText();
     }
 
+    /**
+     * Returns the text input in the add room name text field
+     * @return String representing the room name to be added
+     */
+    public String getAddRoomName(){
+        return tfAddRoomName.getText();
+    }
+
+    /**
+     * Returns the text input in the remove room name text field
+     * @return String representing the room name to be removed
+     */
     public String getRemoveRoomName(){
         return tfRemoveRoomName.getText();
     }
 
-
+    /**
+     * Returns the text input in the update base price text field
+     * @return double representing the new base price
+     */
     public double getUpdateBasePrice(){
         return Double.parseDouble(tfUpdateBasePrice.getText());
     }
 
+    /**
+     * Returns the text input in the remove reservation tex field
+     * @return String representing the reservation to be removed
+     */
     public String getRemoveReservation(){
         return tfRemoveReservation.getText();
     }
 
+    /**
+     * Returns the text input in the date modifier text field
+     * @return String representing the date to be modified
+     */
     public int getDateForModifier(){
         return Integer.parseInt(tfDateForModifier.getText());
     }
 
+    /**
+     * Returns the text input in the price modifier text field
+     * @return String representing the new price for the date
+     */
     public double getPriceForModifier(){
         return Double.parseDouble(tfPriceModifier.getText());
     }
 
-
+    /**
+     * Returns the button for changing the hotel name
+     * @return JButton for changing hotel name
+     */
     public JButton getChangeHotelNameButton(){
         return changeHotel;
     }
 
-    public JButton getAddRoomButton(){
-        return addRoom;
-    }
-
+    /**
+     * Returns the button for adding a standard room
+     * @return JButton for adding standard room
+     */
     public JButton getStandardRoomButton(){
         return standardRoom;
     }
 
+    /**
+     * Returns the button for adding a deluxe room
+     * @return JButton for adding deluxe room
+     */
     public JButton getDeluxeRoomButton(){
         return deluxeRoom;
     }
 
+    /**
+     * Returns the button for adding an executive room
+     * @return JButton for adding executive room
+     */
     public JButton getExecutiveRoomButton(){
         return executiveRoom;
     }
 
+    /**
+     * Returns the button for removing a room
+     * @return JButton for removing a room
+     */
     public JButton getRemoveRoomButton(){
         return removeNameRoom;
     }
 
+    /**
+     * Returns the button for updating the base price of rooms
+     * @return JButton for updating the base price
+     */
     public JButton getUpdateBasePriceButton(){
         return updateBasePriceRoom;
     }
 
+    /**
+     * Returns the button for removing a reservation
+     * @return JButton for removing a reservation
+     */
     public JButton getRemoveReservationButton(){
         return removeGuestReservation;
     }
 
+    /**
+     * Returns the button for removing a hotel
+     * @return JButton for removing a hotel
+     */
     public JButton getRemoveHotelButton(){
         return removeHotelName;
     }
 
+    /**
+     * Returns the button for modifying the date price
+     * @return JButton for modifying date price
+     */
     public JButton getModifyDatePriceButton(){
         return changeDatePrice;
     }
 
 
     // BOOK ROOM FUNCTIONS
+    /**
+     * Returns the text input in the book room hotel name text field
+     * @return String representing the hotel name for booking
+     */
     public String getBookRoomHotelName(){
         return tfBookHotelName.getText();
     }
 
+    /**
+     * Returns the text input in the guest name text field
+     * @return String representing the reservation under guest name
+     */
     public String getBookGuestName(){
         return tfBookGuestName.getText();
     }
 
+    /**
+     * Returns the text input in the check-in date text field
+     * @return String representing the check-in date for booking
+     */
     public String getCheckInDate(){
         return tfCheckIn.getText();
     }
 
+    /**
+     * Returns the text input in the check-out date text field
+     * @return String representing the check-out date for booking
+     */
     public String getCheckOutDate(){
         return tfCheckOut.getText();
     }
 
+    /**
+     * Returns the text input in the room name to book text field
+     * @return String representing the room name for booking
+     */
     public String getRoomToBook(){
         return tfRoomToBook.getText();
     }
 
+    /**
+     * Returns the text input in the discount code text field
+     * @return String representing the discount code for booking
+     */
     public String getDiscountCode(){
         return tfDiscountCode.getText();
     }
 
+    /**
+     * Returns the button for booking a reservation
+     * @return JButton for booking a room
+     */
     public JButton getBookRoomButton(){
         return reserveRoom;
     }
-    
 
 
-
-
-
-
-
-
-
+    /**
+     * Registers the given ActionListener with all action buttons in the user interface
+     * @param listener the ActionListener to be registered with the action buttons.
+     */
     public void setActionListener(ActionListener listener){
         addHotel.addActionListener(listener);
         viewHotel.addActionListener(listener);
